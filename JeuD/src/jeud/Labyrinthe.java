@@ -5,10 +5,16 @@
  */
 package jeud;
 
+
+
 /**
  *
  * @author M1stri25
  */
 public interface Labyrinthe {
+    
+   
+    
+    
     
 }
