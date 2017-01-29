@@ -3,21 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package move;
-
-import java.util.ArrayList;
-import java.util.Scanner;
-import personnage.Joueur;
-
-
+package composition;
 
 /**
  *
  * @author elhadj
  */
+
+import java.util.ArrayList;
+
 public class Piece {
 
-  private int numeroPiece;
+	
+	 private int numeroPiece;
 
      /**
    * numero de la pièce
@@ -40,6 +38,7 @@ public class Piece {
         this.nomPorte=new ArrayList<>();
                
     }
+    
    /**
     * 
     * @param numeroPiece 
@@ -87,7 +86,7 @@ public class Piece {
      * 
      */
     
-     public void   afficherLaPiece()
+     public String   afficherLaPiece()
      {
             String s=new String();
             s+="Vous êtes dans la pièce "+numeroPiece;
@@ -97,7 +96,7 @@ public class Piece {
             {
                 s+="  "+p;
             }
-            System.out.println(""+s);
+            return s;
         }
 
     public void setNumeroPiece(int numeroPiece) {
@@ -116,12 +115,5 @@ public class Piece {
         return nomPorte;
     }
          
-        
-        
-    }
-    
-    
-    
-            
-    
-
+ 
+}
