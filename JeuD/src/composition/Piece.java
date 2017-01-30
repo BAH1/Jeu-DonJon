@@ -91,7 +91,7 @@ public class Piece {
             String s=new String();
             s+="Vous êtes dans la pièce "+numeroPiece;
             s+="\n";
-            s+="Liste de porte de la pièce:";
+            s+="Portes de la pièce:";
             for(String p:nomPorte)
             {
                 s+="  "+p;

@@ -9,8 +9,12 @@ import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -59,7 +63,7 @@ public class Registre {
 		try {
 			state = idConnection.createStatement();
 			 ResultSet resultat = state.executeQuery(requete);
-			 while(resultat.next())
+               while(resultat.next())
              {
                   res= resultat.getString(1);
              }
@@ -89,42 +93,39 @@ public class Registre {
 		}
 		 		
 	}
-       
-    public String executerRequetePluColonne(String requete,int nbcolonne)
+    public String executerTraiter(String requete)
     {
-    	int i;
-    	ArrayList<String>tab=new ArrayList<>();
-    	String res=new String();
-		java.sql.Statement state;
-		try {
-			state = idConnection.createStatement();
-			 ResultSet resultat = state.executeQuery(requete);
-			 System.out.println(requete);
-			 while(resultat.next())
-             {  
-				 for(i=1;i<=nbcolonne;i++)
-				 {   if(i!=nbcolonne)
-					 tab.add(" ("+resultat.getString(i)+":") ; 
-				 else
-					 tab.add(" "+resultat.getString(i)+" ");
-				 }
-                  
-                 
-             }
-		   
-       	 for(String s:tab)
-       	 {
-       		 res+=""+s;
-       	 }
-       	 return res;
-			   
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    return "Erreur Traitement";
-		
+        try {
+            String res=new String();
+            java.sql.Statement state;
+            state = idConnection.createStatement();
+            ResultSet resultat = state.executeQuery(requete);
+            
+            ResultSetMetaData resultMeta = resultat.getMetaData();
+            res+="*****PORTE**********PIECE SUIVANTE***********";
+            while(resultat.next())
+            {
+           res+="\n**********************************\n";
+                
+            
+            //On affiche le nom des colonnes
+            for(int i = 1; i <= resultMeta.getColumnCount(); i++)
+            {
+                
+                  res+="\t"+resultat.getObject(i).toString()+ "\t *";
+            }     
+            
+              res+="\n**********************************";
+            }
+            return res;
+         } catch (SQLException ex) {
+            Logger.getLogger(Registre.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "ErreurDeTraitement";
+  
     }
+    
+  
     
        
 }

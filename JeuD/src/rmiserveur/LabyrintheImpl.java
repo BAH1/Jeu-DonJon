@@ -23,6 +23,7 @@ import java.util.Date;
 import javax.print.attribute.standard.JobOriginatingUserName;
 
 import composition.Piece;
+import registreDe.ColonneRegistre;
 import registreDe.Registre;
 
 
@@ -66,15 +67,85 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	
 
  
-	public String pieceAcote(int numeroPiece)
+	public String informationSurPieceCote(String pseudo) throws RemoteException
 	{
-		String requete;
-		String res=new String();
+             int numero,nombreJoueur;
+	    String requete;
+	    String affiche=new String();
+             String res=new String();
+        /*on verifie dans quel pièce se trouve le joueur */
+	    requete="SELECT numeropi from \"SETROUVER\" where pseudopi='"+pseudo+"'";
+	    
+	    res=registre.executerRequete(requete);
+	  
+             
+          
 	
-		requete="select portepi,numpidest from \"TRAVERSER\" where numerop='"+numeroPiece+"'";
-	return   	registre.executerRequetePluColonne(requete,2);
-	}
+		requete="select portepi,numpidest from \"TRAVERSER\" where numerop='"+res+"'";
+                
+             return  registre.executerTraiter(requete);
+              
+              
+          }
+
 	/**
+         * 
+         * Connexion à la base de donnée à partir du pseudo
+         * @param pseudo
+         * @return
+         * @throws RemoteException 
+         */
+	@Override
+	public String connexion(String pseudo) throws RemoteException {
+		// TODO Auto-generated method stub
+		String sortie=new String();
+		 String requeteVerif;
+        requeteVerif="SELECT pseudo FROM \"JOUEUR\" WHERE pseudo='"+pseudo+"'";
+     
+   
+		
+                   sortie=registre.executerRequete(requeteVerif);
+           if(sortie.equals(pseudo)&& pseudo.length()>3)
+           {
+        	return "1";   
+           }
+           else
+           {
+        	   if(pseudo.length()>3)
+        	   {
+        	   requeteVerif="INSERT INTO \"JOUEUR\" VALUES('"+pseudo+"')";
+        	 
+        	   registre.insertion(requeteVerif);
+        	   
+        	   return "2";
+        	   }
+        	   else
+        		   return "0";
+           }
+		
+
+   
+	}
+        /**
+         * Prend un pseudo et retourne le nombre peresonne dans une pièce en interrogeant la base donnée
+         * @param pseudo
+         * @return 
+         */
+        public int nombreDeJoueurDansPiece(String pseudo)
+        {
+            String res=new String();
+            String requete=new String();
+            requete="select numeropi from \"SETROUVER\" where pseudopi='"+pseudo+"'";
+            res=registre.executerRequete(requete);
+            requete="select count(pseudopi) as nb from \"SETROUVER\" where numeropi='"+res+"'";
+            res=registre.executerRequete(requete);
+            return Integer.parseInt(res);
+            
+        }
+       
+
+   
+    /**
          * Permet dans quel picèce se trouve le joueur
          * @param pseudo
          * @return
@@ -98,7 +169,9 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	      p.creerUnePiece(1);
 	      affiche+=""+p.afficherLaPiece();
 	      affiche+="\n";
-	                
+                  
+	         if(nombreDeJoueurDansPiece(pseudo)!=1)
+                     affiche+="Des personnes sont présents dans la pièce";
 	      return affiche;
 	    }
 	    else 
@@ -110,69 +183,21 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	        
 	    	   affiche+=""+p.afficherLaPiece();
 		      affiche+="\n";
-		     
+                     
+		     if(nombreDeJoueurDansPiece(pseudo)!=1)
+                     affiche+="Des personnes sont présents dans la pièce";
+                    
 		      return affiche;
 		  
 	    }
 		
 	}
-        public void VerificationPiece(String pseudo)
-        {
-            String requete=new String();
-        }
-	/**
-         * 
-         * Connexion à la base de donnée à partir du pseudo
-         * @param pseudo
-         * @return
-         * @throws RemoteException 
-         */
-	@Override
-	public String connexion(String pseudo) throws RemoteException {
-		// TODO Auto-generated method stub
-		String sortie=new String();
-		 String requeteVerif;
-        requeteVerif="SELECT pseudo FROM \"JOUEUR\" WHERE pseudo='"+pseudo+"'";
-     
-   
-		   //sortie=executerRequete(requeteVerif);
-                   sortie=registre.executerRequete(requeteVerif);
-           if(sortie.equals(pseudo)&& pseudo.length()>3)
-           {
-        	return "1";   
-           }
-           else
-           {
-        	   if(pseudo.length()>3)
-        	   {
-        	   requeteVerif="INSERT INTO \"JOUEUR\" VALUES('"+pseudo+"')";
-        	   //state.execute(requeteVerif);
-        	   registre.insertion(requeteVerif);
-        	   
-        	   return "2";
-        	   }
-        	   else
-        		   return "0";
-           }
-		
-
-   
-	}
-        public int nombreDeJoueurDansPiece(String pseudo)
-        {
-            String res=new String();
-            String requete=new String();
-            requete="select numeropi from \"SETROUVER\" where pseudopi='"+pseudo+"'";
-            res=registre.executerRequete(requete);
-            requete="select count(pseudopi) as nb from \"SETROUVER\" where numeropi='"+res+"'";
-            res=registre.executerRequete(requete);
-            return Integer.parseInt(res);
-            
-        }
-
-   
-    
-
+       
+         public void deplacerJoueur(String pseudo)
+         {
+             String requete;
+             
+         }
         
     
     
