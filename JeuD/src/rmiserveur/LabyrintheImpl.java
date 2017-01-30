@@ -23,6 +23,7 @@ import java.util.Date;
 import javax.print.attribute.standard.JobOriginatingUserName;
 
 import composition.Piece;
+import registreDe.Registre;
 
 
 
@@ -32,16 +33,19 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	 * 
 	 */
 	 private ArrayList<Piece>pieceLab;
+         private LabyrintheNotIfication notif;
 	    /**
 	     * le labyrinthe est composé de pièce 
 	     */
 	public Connection idConnection;
+        private registreDe.Registre registre;
 	private static final long serialVersionUID = 1L;
    
 	protected LabyrintheImpl() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 		 pieceLab=new ArrayList<>();
+                 registre=new Registre();
 	}
 	/**
 	 * 
@@ -57,158 +61,18 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
             p.creerUnePiece(i);
             pieceLab.add(p);
         }
+        registre.connexionBD();
     }
 	
 
-	public Double afficher(Double mt) throws RemoteException {
-		// TODO Auto-generated method stub
-		return mt*1000;
-	}
-
-	public Date getDate() throws RemoteException {
-		// TODO Auto-generated method stub
-		return new Date();
-	}
-
-	@Override
-	public void afficher() throws RemoteException {
-		// TODO Auto-generated method stub
-		System.out.println("je suis inteligent");
-		
-	}
-	/**
-	 * 
-	 * Connexion à la base donnée 
-	 */
-
-	@Override
-	public void connexionBD() throws RemoteException {
-		// TODO Auto-generated method stub
-		try
-		{
-		 Class.forName("org.postgresql.Driver");
-	      //System.out.println("Driver O.K.");
-
-	      String url = "jdbc:postgresql://localhost:5433/DIALLO";
-	      String user = "postgres";
-	      String passwd = "diallo";
-
-	      Connection conn;
-		
-			conn = DriverManager.getConnection(url, user, passwd);
-			 idConnection = conn;
-		      System.out.println("Connexion BD okkkk !!!");         
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	     	     
-		
-	}
-        /**
-         * 
-         * Executer une requête pour recuperer plusieurs colonnes de la table
-         * @param requete
-         * @param nbcolonne
-         * @return 
-         */
-    public String executerRequetePluColonne(String requete,int nbcolonne)
-    {
-    	int i;
-    	ArrayList<String>tab=new ArrayList<>();
-    	String res=new String();
-		java.sql.Statement state;
-		try {
-			state = idConnection.createStatement();
-			 ResultSet resultat = state.executeQuery(requete);
-			 System.out.println(requete);
-			 while(resultat.next())
-             {  
-				 for(i=1;i<=nbcolonne;i++)
-				 {   if(i!=nbcolonne)
-					 tab.add(" ("+resultat.getString(i)+":") ; 
-				 else
-					 tab.add(" "+resultat.getString(i)+" ");
-				 }
-                  
-                 
-             }
-		   
-       	 for(String s:tab)
-       	 {
-       		 res+=""+s;
-       	 }
-       	 return res;
-			   
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    return "Erreur Traitement";
-		
-    }
-    /**
-     * recupère une seule colonne d'une table
-     * @param requete
-     * @return 
-     */
-	public String executerRequete(String requete)
-	{
-		String res=new String();
-		java.sql.Statement state;
-		try {
-			state = idConnection.createStatement();
-			 ResultSet resultat = state.executeQuery(requete);
-			 while(resultat.next())
-             {
-                  res= resultat.getString(1);
-             }
-		   
-       	 return res;
-			   
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    return "Erreur Traitement";
-		
-	
-		
-	}
-        /**
-         * 
-         * INSERTIION DANS LA BASE DE DONNÉE À PARTIR D'UNE REQUÊTE
-         */
-	public void insertion(String requete)
-	{
-		String res=new String();
-		java.sql.Statement state;
-		 try {
-			state = idConnection.createStatement();
-			 state.execute(requete);
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 		
-	}
-        /**
-         * Recupère les pièces suivantes et les portes pour y acceder
-         * @param numeroPiece
-         * @return 
-         */
+ 
 	public String pieceAcote(int numeroPiece)
 	{
 		String requete;
 		String res=new String();
 	
 		requete="select portepi,numpidest from \"TRAVERSER\" where numerop='"+numeroPiece+"'";
-	return   	executerRequetePluColonne(requete,2);
+	return   	registre.executerRequetePluColonne(requete,2);
 	}
 	/**
          * Permet dans quel picèce se trouve le joueur
@@ -217,24 +81,26 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
          * @throws RemoteException 
          */
 	public String positionJoueur(String pseudo) throws RemoteException
-	{   int numero;
+	{   int numero,nombreJoueur;
 	    String requete;
 	    String affiche=new String();
         String res=new String();
+        /*on verifie dans quel pièce se trouve le joueur */
 	    requete="SELECT numeropi from \"SETROUVER\" where pseudopi='"+pseudo+"'";
 	    
-	    res=executerRequete(requete);
+	    res=registre.executerRequete(requete);
 	    if(res.length()==0)
 	      {
 	      requete="INSERT INTO \"SETROUVER\"VALUES('"+pseudo+"','1')";
-	      insertion(requete);
+	      registre.insertion(requete);
 	     
 	      Piece p=new Piece(1);
 	      p.creerUnePiece(1);
 	      affiche+=""+p.afficherLaPiece();
 	      affiche+="\n";
-	      affiche+="Porte:Pièce Suivante \n";
-	      affiche+=pieceAcote(1);
+	                 nombreJoueur=nombreDeJoueurDansPiece(pseudo);
+                         if(notif!=null && nombreJoueur>1)
+                             affiche+="Vous pouvez chatter avec des personnes dans la pièce";
 	      return affiche;
 	    }
 	    else 
@@ -242,17 +108,22 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	    	numero=Integer.parseInt(res);
 	    	Piece p=new Piece(numero);
 	    	p.creerUnePiece(numero);
-	    	insertion(requete);
+	    	registre.insertion(requete);
 	        
 	    	   affiche+=""+p.afficherLaPiece();
 		      affiche+="\n";
-		      affiche+="Porte:Pièce Suivante \n";
-		      affiche+=pieceAcote(numero);
+		     nombreJoueur=nombreDeJoueurDansPiece(pseudo);
+                     if(notif!=null && nombreJoueur>1)
+                             affiche+="Vous pouvez chatter avec des personnes dans la pièce";
 		      return affiche;
 		  
 	    }
 		
 	}
+        public void VerificationPiece(String pseudo)
+        {
+            String requete=new String();
+        }
 	/**
          * 
          * Connexion à la base de donnée à partir du pseudo
@@ -268,7 +139,8 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
         requeteVerif="SELECT pseudo FROM \"JOUEUR\" WHERE pseudo='"+pseudo+"'";
      
    
-		   sortie=executerRequete(requeteVerif);
+		   //sortie=executerRequete(requeteVerif);
+                   sortie=registre.executerRequete(requeteVerif);
            if(sortie.equals(pseudo)&& pseudo.length()>3)
            {
         	return "1";   
@@ -279,7 +151,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
         	   {
         	   requeteVerif="INSERT INTO \"JOUEUR\" VALUES('"+pseudo+"')";
         	   //state.execute(requeteVerif);
-        	   insertion(requeteVerif);
+        	   registre.insertion(requeteVerif);
         	   
         	   return "2";
         	   }
@@ -290,5 +162,27 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 
    
 	}
+        public int nombreDeJoueurDansPiece(String pseudo)
+        {
+            String res=new String();
+            String requete=new String();
+            requete="select numeropi from \"SETROUVER\" where pseudopi='"+pseudo+"'";
+            res=registre.executerRequete(requete);
+            requete="select count(pseudopi) as nb from \"SETROUVER\" where numeropi='"+res+"'";
+            res=registre.executerRequete(requete);
+            return Integer.parseInt(res);
+            
+        }
+
+    @Override
+    public synchronized void envoyerNotification(String pseudo, LabyrintheNotification l) {
+      this.notif=l;   
+    }
+
+    
+
+        
+    
+    
 
 }

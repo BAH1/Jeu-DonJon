@@ -32,8 +32,8 @@ public class Client {
                 if(Integer.parseInt(res)==1)
                 	System.out.println("Bienvenue Dans le labyrinthe"); 
                 else if(Integer.parseInt(res)==2)
-                	System.out.println("Bienvenue dans le labyrinth"
-                			+ "Prochaine Inscription avec ce pseudo ");
+                	System.out.println("Bienvenue dans le labyrinthe"
+                			+ "\n Prochaine COnnexion avec ce pseudo ");
               
             }while(Integer.parseInt(res)==0);
             

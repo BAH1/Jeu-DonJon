@@ -21,9 +21,11 @@ public class ServeurRMI {
 		// TODO Auto-generated method stub
 		LocateRegistry.createRegistry(1099);
 		LabyrintheImpl obj=new LabyrintheImpl();
+                obj.creerLabyrinthe();
+              
 		System.out.println(obj.toString());
 	    Naming.rebind("rmi://localhost:1099/by", obj);
-	    obj.connexionBD();
+	   
 
 	}
 

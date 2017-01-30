@@ -37,7 +37,7 @@ public class Joueur implements Serializable {
    public void Saisir()
    {
 	   Scanner sc=new Scanner(System.in);
-	   System.out.println("Veiller Votre");
+	   System.out.println("Veiller Votre Pseudo");
 	   setNomjoueur(sc.nextLine());
 	   
 	   
