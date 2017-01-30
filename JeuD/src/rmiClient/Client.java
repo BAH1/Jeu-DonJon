@@ -38,6 +38,7 @@ public class Client {
             }while(Integer.parseInt(res)==0);
             
               System.out.println(stub.positionJoueur(joueur.getNomjoueur()));
+             
 		//System.out.println(""+lab.afficher(1000.0));
 	} catch (MalformedURLException | RemoteException | NotBoundException e) {
 		// TODO Auto-generated catch block

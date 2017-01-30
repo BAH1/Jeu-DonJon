@@ -33,7 +33,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	 * 
 	 */
 	 private ArrayList<Piece>pieceLab;
-         private LabyrintheNotIfication notif;
+        
 	    /**
 	     * le labyrinthe est composé de pièce 
 	     */
@@ -98,9 +98,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	      p.creerUnePiece(1);
 	      affiche+=""+p.afficherLaPiece();
 	      affiche+="\n";
-	                 nombreJoueur=nombreDeJoueurDansPiece(pseudo);
-                         if(notif!=null && nombreJoueur>1)
-                             affiche+="Vous pouvez chatter avec des personnes dans la pièce";
+	                
 	      return affiche;
 	    }
 	    else 
@@ -112,9 +110,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	        
 	    	   affiche+=""+p.afficherLaPiece();
 		      affiche+="\n";
-		     nombreJoueur=nombreDeJoueurDansPiece(pseudo);
-                     if(notif!=null && nombreJoueur>1)
-                             affiche+="Vous pouvez chatter avec des personnes dans la pièce";
+		     
 		      return affiche;
 		  
 	    }
@@ -174,11 +170,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
             
         }
 
-    @Override
-    public synchronized void envoyerNotification(String pseudo, LabyrintheNotification l) {
-      this.notif=l;   
-    }
-
+   
     
 
         
