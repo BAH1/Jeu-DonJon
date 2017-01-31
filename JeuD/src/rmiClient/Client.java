@@ -5,10 +5,12 @@
  */
 package rmiClient;
 
+import chatrmi.ClientImpl;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import messagerie.InterfaceServ;
 import personnage.Joueur;
 import rmiserveur.LabyrintheInterface;
 
@@ -22,9 +24,11 @@ public class Client {
     public static void main(String[] args) throws NotBoundException {
 		// TODO Auto-generated method stub
 	try {
+            InterfaceServ chat=(InterfaceServ)Naming.lookup("rmi://localhost:1098/RMIT");
             LabyrintheInterface stub=(LabyrintheInterface)Naming.lookup("rmi://localhost:1099/by");
             Joueur joueur=new Joueur();
            String res;
+            ClientImpl c = null;
             do
             {
             	joueur.Saisir();
@@ -36,11 +40,24 @@ public class Client {
                 			+ "\n Prochaine COnnexion avec ce pseudo ");
               
             }while(Integer.parseInt(res)==0);
-            
+           
               System.out.println(stub.positionJoueur(joueur.getNomjoueur()));
-              System.out.println(stub.informationSurPieceCote(joueur.getNomjoueur()));
-             
-		//System.out.println(""+lab.afficher(1000.0));
+             if(Integer.parseInt(joueur.Menu())==2)
+             {
+                   c=new ClientImpl(chat,joueur.getNomjoueur());
+             }
+            
+                 
+              
+            //  System.out.println(stub.informationSurPieceCote(joueur.getNomjoueur()));
+              
+       
+       
+        
+        
+             new Thread(c).start();    
+            
+              
 	} catch (MalformedURLException | RemoteException | NotBoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

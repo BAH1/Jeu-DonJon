@@ -42,6 +42,14 @@ public class Joueur implements Serializable {
 	   
 	   
    }
+   public String Menu()
+   {
+       Scanner sc=new Scanner(System.in);
+       System.out.println("****1.Pour Vous deplacez******");
+       System.out.println("****2.Envoyer un message***********");
+       System.out.println("****3. Pour quitter***************");
+       return sc.nextLine();
+   }
  /***
   * 
   * @param nomjoueur
