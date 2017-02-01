@@ -34,6 +34,7 @@ public class Joueur implements Serializable {
    {
        
    }
+   
    public void Saisir()
    {
 	   Scanner sc=new Scanner(System.in);

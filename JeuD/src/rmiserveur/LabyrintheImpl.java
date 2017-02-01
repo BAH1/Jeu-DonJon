@@ -23,6 +23,7 @@ import java.util.Date;
 import javax.print.attribute.standard.JobOriginatingUserName;
 
 import composition.Piece;
+import java.util.Scanner;
 import registreDe.ColonneRegistre;
 import registreDe.Registre;
 
@@ -155,7 +156,9 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	{   int numero,nombreJoueur;
 	    String requete;
 	    String affiche=new String();
+         
         String res=new String();
+     
         /*on verifie dans quel pièce se trouve le joueur */
 	    requete="SELECT numeropi from \"SETROUVER\" where pseudopi='"+pseudo+"'";
 	    
@@ -171,7 +174,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 	      affiche+="\n";
                   
 	         if(nombreDeJoueurDansPiece(pseudo)!=1)
-                     affiche+="Des personnes sont présents dans la pièce";
+                     affiche+="\"Des personnes sont présents dans la pièce";
 	      return affiche;
 	    }
 	    else 
@@ -193,9 +196,41 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 		
 	}
        
-         public void deplacerJoueur(String pseudo)
+         public void deplacerJoueur(String pseudo,String porte) throws RemoteException
          {
-             String requete;
+             String requete,res,p,affiche;
+             affiche=new String();
+             p=new String();
+             
+             requete="SELECT numeropi from \"SETROUVER\" WHERE pseudopi='"+pseudo+"'";
+             res=registre.executerRequete(requete);
+             p=porte;
+             if(p.charAt(0)=='E')
+             {
+                 p+="ST";
+             }
+             else if(p.charAt(0)=='N')
+             {
+                 p+="ORD";
+             }
+             else if(p.charAt(0)=='O')
+             {
+                 p+="UEST";
+             }
+             else
+             {
+                 p+="UD";
+             }
+            requete="select numpidest from \"TRAVERSER\" where numerop='"+res+"' and portepi='"+p+"'";
+            
+            res=registre.executerRequete(requete);
+            requete="UPDATE \"SETROUVER\" \n" +"set numeropi='"+res+"'where pseudopi='"+pseudo+"'";
+             System.out.println("la requete est"+requete);
+            registre.insertion(requete);
+            Piece pi=new Piece(Integer.parseInt(res));
+	      pi.creerUnePiece(Integer.parseInt(res));
+	      affiche+=""+pi.afficherLaPiece();
+	   
              
          }
         

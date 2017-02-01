@@ -93,6 +93,37 @@ public class Registre {
 		}
 		 		
 	}
+    public String recupererPlusieursColonne(String requete)
+    {
+        try {
+            String res=new String();
+            java.sql.Statement state;
+            state = idConnection.createStatement();
+            ResultSet resultat = state.executeQuery(requete);
+            
+            ResultSetMetaData resultMeta = resultat.getMetaData();
+           
+            while(resultat.next())
+            {
+          
+                
+            
+            //On affiche le nom des colonnes
+            for(int i = 1; i <= resultMeta.getColumnCount(); i++)
+            {
+                
+                  res+=""+resultat.getObject(i).toString()+ "";
+            }     
+            
+              
+            }
+            return res;
+         } catch (SQLException ex) {
+            Logger.getLogger(Registre.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "ErreurDeTraitement";
+  
+    }
     public String executerTraiter(String requete)
     {
         try {

@@ -21,35 +21,45 @@ public class ClientImpl extends UnicastRemoteObject implements ClientInterface,R
    
     private InterfaceServ chatserver;
     private String name;
-
+    private String msg;
     public ClientImpl(InterfaceServ chatserver, String name) throws RemoteException
     {
         this.chatserver = chatserver;
         this.name = name;
         chatserver.enregistrerClient(this);
     }
-    
+    public void afficher()
+    {
+        Scanner sc=new Scanner(System.in);
+        
+        
+       System.out.println("Entrer votre message ");
+       msg+=""+name+" :";
+            msg+=""+sc.nextLine();
+        
+    }
 
     
 
     @Override
     public void run() {
         //To change body of generated methods, choose Tools | Templates.
-        Scanner sc=new Scanner(System.in);
-        String msg=new String();
         
-        System.out.println("Entrer votre message ");
-        while(true)
-        {  
-            msg+=""+name+" :";
-            msg+=""+sc.nextLine();
-            try {
+           
+            
+
+                try {
+               if(msg!=null)     
+               {
                 msg=chatserver.transmettreMessage(msg);
-                System.out.print(""+msg);
+                System.out.print(""+msg);   
+               }
+                
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             }
-        }
+        
+        
         
     }
 

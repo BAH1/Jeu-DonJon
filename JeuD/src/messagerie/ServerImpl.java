@@ -13,6 +13,9 @@ import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import registreDe.Registre;
 
 /**
  *
@@ -22,10 +25,20 @@ public class ServerImpl extends UnicastRemoteObject implements InterfaceServ{
      private ClientInterface c;
     private ArrayList<ClientInterface>clients;
     public ArrayList<String>register;
+    private Registre base;
     public ServerImpl() throws RemoteException {
       clients=new ArrayList<>();
       register=new ArrayList<>();
+      base=new Registre();
       
+    }
+    public void ConnexionBD()
+    {
+         try {
+             base.connexionBD();
+         } catch (RemoteException ex) {
+             Logger.getLogger(ServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 
     

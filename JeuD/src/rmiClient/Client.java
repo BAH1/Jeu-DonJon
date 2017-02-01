@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 import messagerie.InterfaceServ;
 import personnage.Joueur;
 import rmiserveur.LabyrintheInterface;
@@ -27,7 +28,9 @@ public class Client {
             InterfaceServ chat=(InterfaceServ)Naming.lookup("rmi://localhost:1098/RMIT");
             LabyrintheInterface stub=(LabyrintheInterface)Naming.lookup("rmi://localhost:1099/by");
             Joueur joueur=new Joueur();
-           String res;
+            Scanner sc=new Scanner(System.in);
+           String res,choix2;
+           int choix;
             ClientImpl c = null;
             do
             {
@@ -42,14 +45,25 @@ public class Client {
             }while(Integer.parseInt(res)==0);
            
               System.out.println(stub.positionJoueur(joueur.getNomjoueur()));
-             if(Integer.parseInt(joueur.Menu())==2)
+              choix=Integer.parseInt(joueur.Menu());
+             if(choix==2)
              {
                    c=new ClientImpl(chat,joueur.getNomjoueur());
+                   new Thread(c).start();
+                   c.afficher();
+             }
+             else if(choix==1)
+             {
+                  System.out.println(stub.informationSurPieceCote(joueur.getNomjoueur()));
+                  
+                  choix2=sc.nextLine();
+                  stub.deplacerJoueur(joueur.getNomjoueur(), choix2);
+                  
              }
             
                  
               
-            //  System.out.println(stub.informationSurPieceCote(joueur.getNomjoueur()));
+            
               
        
        
