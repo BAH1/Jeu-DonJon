@@ -196,7 +196,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
 		
 	}
        
-         public void deplacerJoueur(String pseudo,String porte) throws RemoteException
+         public String deplacerJoueur(String pseudo,String porte) throws RemoteException
          {
              String requete,res,p,affiche;
              affiche=new String();
@@ -229,7 +229,7 @@ public class LabyrintheImpl extends UnicastRemoteObject implements LabyrintheInt
             registre.insertion(requete);
             Piece pi=new Piece(Integer.parseInt(res));
 	      pi.creerUnePiece(Integer.parseInt(res));
-	      affiche+=""+pi.afficherLaPiece();
+	     return affiche+=""+pi.afficherLaPiece();
 	   
              
          }
