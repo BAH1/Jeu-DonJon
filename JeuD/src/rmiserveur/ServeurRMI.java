@@ -26,10 +26,12 @@ public class ServeurRMI {
               
 		System.out.println(obj.toString());
 	    Naming.rebind("rmi://localhost:1099/by", obj);
-            LocateRegistry.createRegistry(1098);
+           
         ServerImpl s=new ServerImpl();
         System.out.println(""+s.toString());
+        LocateRegistry.createRegistry(1098);
         Naming.rebind("rmi://localhost:1098/RMIT",s);
+         
         
 	   
 
