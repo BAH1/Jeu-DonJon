@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Joueur implements Serializable {
-	
+	private Integer vieJoueur = 10;
 	private String nomjoueur;
 
     private String motdepasse;
@@ -66,6 +66,25 @@ public class Joueur implements Serializable {
    public String getNomjoueur() {
        return nomjoueur;
    }
+
+    public Integer getVieJoueur() {
+        return vieJoueur;
+    }
+
+    public void setVie(Integer vie) {
+        this.vieJoueur = vie;
+    }
+    public void retirerVieJoueur(Integer vie) {
+        this.vieJoueur -= vie;
+    }
+    public void ajouterVieJoueur(Integer vie) {
+        this.vieJoueur += vie;
+    }
+    
+    public void attaquerMonstre(Monstre M, Joueur j){
+        System.out.println("Joueur"+j+"attaque le Monstre"+M);
+        M.retirerVieMonstre(1);
+}
 
    
   
