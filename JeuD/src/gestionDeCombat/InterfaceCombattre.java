@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package chatrmi;
+package gestionDeCombat;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.sql.SQLException;
 
 /**
  *
  * @author elhadj
  */
-public interface ClientInterface extends Remote{
+public interface InterfaceCombattre extends Remote{
     
-   
-    
+    public void combatMJ (Monstre M, Joueur j) throws RemoteException;
+    public void combatJJ (Joueur j1, Joueur j2) throws RemoteException; 
 }

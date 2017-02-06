@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package gestionDeCombat;
+
+import java.io.Serializable;
+import java.util.Scanner;
 
 /**
  *
  * @author elhadj
  */
-package personnage;
-import java.io.Serializable;
-import java.util.Scanner;
-
-public class Joueur implements Serializable {
-	private Integer vieJoueur = 10;
+public class Joueur implements Serializable{
+    private Integer vieJoueur = 10;
 	private String nomjoueur;
 
     private String motdepasse;
@@ -46,6 +46,7 @@ public class Joueur implements Serializable {
    public String Menu()
    {
        Scanner sc=new Scanner(System.in);
+       System.out.println("****1. Pour attaquer*****************************");
        System.out.println("****1.Pour Vous deplacez******");
        System.out.println("****2.Envoyer un message***********");
        System.out.println("****3. Pour quitter***************");
@@ -76,17 +77,27 @@ public class Joueur implements Serializable {
     }
     public void retirerVieJoueur(Integer vie) {
         this.vieJoueur -= vie;
+        System.out.println("la vie du joueur "+nomjoueur+":"+vieJoueur);
     }
     public void ajouterVieJoueur(Integer vie) {
         this.vieJoueur += vie;
+       System.out.println("la vie du joueur "+nomjoueur+":"+vieJoueur);
     }
     
     public void attaquerMonstre(Monstre M, Joueur j){
         System.out.println("Joueur"+j+"attaque le Monstre"+M);
         M.retirerVieMonstre(1);
 }
+    
+     public String Menureduit()
+   {
+       Scanner sc=new Scanner(System.in);
+       System.out.println("****2. Pour Vous deplacez (Fuir le combat)******");
+       System.out.println("****3.Envoyer un message************************");
+       System.out.println("****4. Pour quitter*****************************");
+       return sc.nextLine();
+   }
 
-   
-  
 
+    
 }

@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package composition;
+package gestionduLabyrinthe;
 
 /**
  *
  * @author elhadj
  */
 
+import gestionPersonnage.Personnage;
 import java.util.ArrayList;
 
 public class Piece {
@@ -31,13 +32,44 @@ public class Piece {
     *
     Toute les portes dispobibles
     */
-  
+    private ArrayList<Personnage>personneDansLapiece;
+            
+    
     public Piece(Integer numeroPiece) {
         
         this.numeroPiece = numeroPiece;
         this.nomPorte=new ArrayList<>();
+        personneDansLapiece=new ArrayList<>();
                
     }
+    public int trouverUnPersonne(String nom)
+    {  
+        int i;
+        boolean trouve=false;
+        i=0;
+        
+        while(i<personneDansLapiece.size()&&!trouve)
+        {
+            if(personneDansLapiece.get(i).getNom().equals(nom))
+                trouve=true;
+            i++;
+        }
+        if(trouve==true)
+            return i;
+        else 
+            return 0;
+        
+    }
+    public void AjouterPersonnage(Personnage personnage)
+    {
+        personneDansLapiece.add(personnage);
+    }
+    public void afficherPersonneDanspiece()
+    {
+        for(Personnage p:personneDansLapiece)
+            System.out.println(""+p.toString());
+    }
+    
     
    /**
     * 
@@ -114,6 +146,7 @@ public class Piece {
     public ArrayList<String> getNomPorte() {
         return nomPorte;
     }
-         
+        
+ 
  
 }

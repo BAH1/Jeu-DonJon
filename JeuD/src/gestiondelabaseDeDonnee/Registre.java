@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package registreDe;
+package gestiondelabaseDeDonnee;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,7 +38,7 @@ public class Registre {
 	      String user = "postgres";
 	      String passwd = "diallo";
 
-	      Connection conn;
+	      
 		
 			idConnection = DriverManager.getConnection(url, user, passwd);
 			
@@ -93,38 +92,7 @@ public class Registre {
 		}
 		 		
 	}
-    public String recupererPlusieursColonne(String requete)
-    {
-        try {
-            String res=new String();
-            java.sql.Statement state;
-            state = idConnection.createStatement();
-            ResultSet resultat = state.executeQuery(requete);
-            
-            ResultSetMetaData resultMeta = resultat.getMetaData();
-           
-            while(resultat.next())
-            {
-          
-                
-            
-            //On affiche le nom des colonnes
-            for(int i = 1; i <= resultMeta.getColumnCount(); i++)
-            {
-                
-                  res+=""+resultat.getObject(i).toString()+ "";
-            }     
-            
-              
-            }
-            return res;
-         } catch (SQLException ex) {
-            Logger.getLogger(Registre.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return "ErreurDeTraitement";
-  
-    }
-    public String executerTraiter(String requete)
+    public String MenuPourSeDeplacer(String requete)
     {
         try {
             String res=new String();
@@ -155,8 +123,39 @@ public class Registre {
         return "ErreurDeTraitement";
   
     }
+    public ArrayList<String> executerTraiter(String requete,int pos)
+    {
+        
+        try {
+            String res=new String();
+            java.sql.Statement state;
+            ArrayList<String>contenuColonne=new ArrayList<>();
+            state = idConnection.createStatement();
+            ResultSet resultat = state.executeQuery(requete);
+            
+            ResultSetMetaData resultMeta = resultat.getMetaData();
+           
+            while(resultat.next())
+            {
+           
+                
+            
+            //On affiche le nom des colonnes
+           // for(int i = 1; i <= resultMeta.getColumnCount(); i++)
+            //{
+                
+              contenuColonne.add(resultat.getObject(pos).toString());
+           // }     
+            
+              
+            }
+            return contenuColonne;
+         } catch (SQLException ex) {
+            Logger.getLogger(Registre.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      return null;
+    }
     
   
-    
-       
 }
