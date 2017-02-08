@@ -5,6 +5,7 @@
  */
 package gestionduLabyrinthe;
 
+import gestionDeCombat.ImplInterfaceCombattre;
 import gestionduchat.ServerChatImpl;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -34,16 +35,22 @@ public class demarrerServeur {
          */
         Naming.rebind("rmi://localhost:1099/by", lab);
         
-            LocateRegistry.createRegistry(1098);
+          //  LocateRegistry.createRegistry(1098);
                         ServerChatImpl s=new ServerChatImpl();
                        System.out.println(""+s.toString());
                        try {
-                           Naming.rebind("rmi://localhost:1098/RMIT",s);
+                           Naming.rebind("rmi://localhost:1099/RMIT",s);
                        } catch (MalformedURLException ex) {
                            Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
                        }
                        
-      
+                    LocateRegistry.createRegistry(1097);
+		      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
+		        System.out.println(comb.toString());
+                        comb.InitMonstreSalle();
+	              Naming.rebind("rmi://localhost:1097/combat", comb);  
+                               
+                    
     }
     
 }

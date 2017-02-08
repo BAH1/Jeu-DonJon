@@ -32,7 +32,7 @@ public class ServerChatImpl extends UnicastRemoteObject implements ServeurChat{
          String s=new String();
          String requete;
          requete="select message from \"MESSAGEPIECE\" where numerop='"+numeroPiece+"'" ;
-         System.out.println(""+requete);
+     
          s=base.executerRequete(requete);
         
          

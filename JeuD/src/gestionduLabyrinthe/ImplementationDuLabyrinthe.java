@@ -66,7 +66,6 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
            {
         	perso.setNom(client.getNom());
                 requeteVerif="select numeropi from \"SETROUVER\" WHERE pseudopi='"+client.getNom()+"'";
-                System.out.println("la requete "+requeteVerif);
                 perso.setNumeropiece(Integer.parseInt(registre.executerRequete(requeteVerif)));
                 client.afficherEtatConnexion(perso.getNumeropiece());
                 client.setNumeropiece(perso.getNumeropiece());
@@ -110,11 +109,15 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
 	}
     public void  notification(InterfaceClient client) throws RemoteException
     {
-        String requeteVerif;
-        requeteVerif="select count(*) as nb from \"SETROUVER\" WHERE numeropi='"+client.getNumeropiece()+"'";
-                        if(Integer.parseInt(registre.executerRequete(requeteVerif))>1)
-                        {
+        int nb=0;
                               for(InterfaceClient c:clients)
+                              {
+                                 if(c.getNumeropiece()==client.getNumeropiece())
+                                     nb++;
+                              }
+                              if(nb>1)
+                              {
+                                  for(InterfaceClient c:clients)
                               {
                                 
                                    if(c.getNumeropiece()==client.getNumeropiece())
@@ -123,10 +126,13 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
                                    }
                                   
                               }
-                             System.out.println("le nombre de client est "+clients.size());
+                           
+                                  
+                              }
+                               
                               
                              
-                        }
+                        
                                     
         
     }
@@ -158,8 +164,8 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
             
         
             registre.insertion(requete);
-            retirerClient(client);
-            
+           retirerClient(client);
+          
             perso.setNumeropiece(Integer.parseInt(res));
            client.setNumeropiece(Integer.parseInt(res));
            client.setNom(perso.getNom());
@@ -205,6 +211,17 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
         clients.add(client);
                 
      }
+   
+  /* public void retirerTest(String nom) throws RemoteException
+   {
+       for(InterfaceClient c:clients)
+       {
+           if(c.getNom().equals(nom))
+           {
+            clients.remove(c);
+           }
+       }
+   }*/
    public void retirerClient(InterfaceClient client) throws RemoteException
    {
       clients.remove(client);

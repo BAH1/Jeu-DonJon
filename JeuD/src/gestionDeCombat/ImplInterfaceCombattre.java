@@ -8,6 +8,7 @@ package gestionDeCombat;
 import gestionduLabyrinthe.ImplementationDuLabyrinthe;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -16,18 +17,26 @@ import java.util.Scanner;
  */
 public class ImplInterfaceCombattre extends UnicastRemoteObject implements InterfaceCombattre{
     
+   private  ArrayList<Monstre>lesMonstre;
+   private String tabNameMonstre[]={"CELL","BOUBOU","BOUBOUGENTIL","GOKUBLACK",
+   "DRAGON","DRAGONBLACK","DINO","NGORO","CHIVA"};
     
     
-    
-String porte;
+     String porte;
     Scanner sc=new Scanner(System.in);
     
-    protected ImplInterfaceCombattre() throws RemoteException {
+      public ImplInterfaceCombattre() throws RemoteException {
 		super();
-
+                lesMonstre=new ArrayList<>();
 	}
     
-    
+    public void InitMonstreSalle()
+    {
+      for(int i=0;i<10;i++)
+      {
+         lesMonstre.add(new Monstre(tabNameMonstre[i]));
+      }
+    }
     public void combatMJ (Monstre M, Joueur j) throws RemoteException {
         System.out.println("Monstre "+M+" attaque le joueur " +j);
        // j.retirerVieJoueur(1);

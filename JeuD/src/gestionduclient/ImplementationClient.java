@@ -26,10 +26,15 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     
     public void saisirPseudo()
     {
-       
+       do
+       {
         System.out.println("Entrer votre pseudo");
         nom=sc.nextLine();
-    }
+        if(nom.length()<3)
+               System.out.println("Votre pseudo est trop court");
+       }while(nom.length()<3);   
+       }
+        
 
     public String getNom() throws RemoteException{
         return nom;
@@ -82,10 +87,15 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
         //To change body of generated methods, choose Tools | Templates.
         Scanner sc=new Scanner(System.in);
         String monMessage=new String();
+        String test=new String();
         System.out.println("Entrer votre message");
+        
          monMessage+="["+nom+"] ";
-    
-        return    monMessage+=sc.nextLine();
+           test=sc.nextLine();
+           if(!test.equals("q"))
+          return      monMessage+=test;
+           else 
+           return test;
    
         
     }

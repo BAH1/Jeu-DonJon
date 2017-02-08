@@ -21,7 +21,7 @@ public class DemarrerClient {
        public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
         
            String choix=new String();
-           String msg;
+           String msg = new String();
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
          
             ImplementationClient client=new ImplementationClient();
@@ -41,19 +41,26 @@ public class DemarrerClient {
             }
             else  if(Integer.parseInt(choix)==2)
             {
-               ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1098/RMIT");
+               ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
                                        serveur.enregistrerClient(client,client.getNumeropiece());
-                                       while(true)
+                                      do
                                        {
+                                           if(!msg.equals("q"))
+                                           {
                                            msg=client.envoyerMessage();
                                            serveur.recevoirMessage(msg,client);
                                            serveur.envoyerMessageAtous(client.getNumeropiece());
-                                          
-                                       }
+                                              
+                                           }
+                                         
+                                           
+                                       }while(!msg.equals("q"));
+                                      
 
             }
            
     
             }while(Integer.parseInt(choix)!=3);
+            System.exit(0);
     }
 }
