@@ -5,19 +5,21 @@
  */
 package gestionDeCombat;
 
+import gestionPersonnage.Personnage;
 import java.util.Scanner;
 
 /**
  *
  * @author elhadj
  */
-public class Monstre {
+public class Monstre{
     
-     private String nomMonstre;
+    private String nomMonstre;
     private Integer vieMonstre = 5;
-
+    private boolean etatMonstre = false;
     public Monstre(String pnomMonstre) {
         this.nomMonstre = pnomMonstre;
+        vieMonstre=5;
     }
 
     
@@ -42,6 +44,9 @@ public class Monstre {
     
     public void retirerVieMonstre(Integer vie) {
         this.vieMonstre -= vie;
+        if(vieMonstre<0){
+        vieMonstre=0;
+        }
     }
     public void ajouterVieJoueur(Integer vie) {
         this.vieMonstre += vie;
@@ -55,6 +60,18 @@ public class Monstre {
         this.vieMonstre = vieMonstre;
     }
     
+     public void attaquerPersonnage(Personnage p){
+        System.out.println("Monstre "+getNomMonstre()+ "attaque le personnage " +p.getNom());
+        p.retirerVieJoueur(1);
+}
+
+    public boolean isEtatMonstre() {
+        return etatMonstre;
+    }
+
+    public void setEtatMonstre(boolean etatMonstre) {
+        this.etatMonstre = etatMonstre;
+    }
    
     
 }

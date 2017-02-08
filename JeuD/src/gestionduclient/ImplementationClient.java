@@ -68,7 +68,8 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     {
         System.out.println("1.pour se deplacer ");
          System.out.println("2.pour chatter ");
-          System.out.println("3.Quitter ");
+         System.out.println("3.pour chatter ");
+          System.out.println("4.Quitter ");
         
     }
     public String choixclient() throws RemoteException
@@ -118,5 +119,6 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
         System.out.println("D'autre joueurs sont présents dans la pièce");
     }
   
+    
     
 }

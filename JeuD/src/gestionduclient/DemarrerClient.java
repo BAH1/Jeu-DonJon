@@ -5,6 +5,9 @@
  */
 package gestionduclient;
 
+import gestionDeCombat.InterfaceCombattre;
+import gestionDeCombat.Monstre;
+import gestionPersonnage.Personnage;
 import gestionduLabyrinthe.InterfaceduLabyrinthe;
 import gestionduchat.ServeurChat;
 import java.net.MalformedURLException;
@@ -58,9 +61,16 @@ public class DemarrerClient {
                                       
 
             }
+             else  if(Integer.parseInt(choix)==3){ 
+             InterfaceCombattre serveur = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
+                        Monstre M = new Monstre("gaagaaaaaaaa");
+                        Personnage p1 = new Personnage(client.getNom(), 1);
+                        Personnage p2 = new Personnage(client.getNom(), 1);
+                        serveur.combatMJ(M, p1);
+             }
            
     
-            }while(Integer.parseInt(choix)!=3);
+            }while(Integer.parseInt(choix)!=4);
             System.exit(0);
     }
 }

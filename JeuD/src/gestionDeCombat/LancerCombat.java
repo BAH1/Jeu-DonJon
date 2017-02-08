@@ -17,12 +17,12 @@ import java.rmi.registry.LocateRegistry;
 public class LancerCombat {
     public static void main(String[] args) throws RemoteException, MalformedURLException {
 		// TODO Auto-generated method stub
-                /*
+                
 		LocateRegistry.createRegistry(1097);
 		      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
 		System.out.println(comb.toString());
 	    Naming.rebind("rmi://localhost:1097/combat", comb);
-          */
+          
 
 	}
 

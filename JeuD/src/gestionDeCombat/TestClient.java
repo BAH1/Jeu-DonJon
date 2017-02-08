@@ -5,6 +5,7 @@
  */
 package gestionDeCombat;
 
+import gestionPersonnage.Personnage;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -18,13 +19,12 @@ public class TestClient {
       public static void main(String[] args) throws NotBoundException, MalformedURLException {
 		// TODO Auto-generated method stub
 	try {
-            InterfaceCombattre combat = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
-         
-            Joueur J1 =new Joueur("bah");
-            Joueur J2 =new Joueur("diallo");
-            //Monstre M = new Monstre("Cheikh");
-            //combat.combatMJ(monstre, bah);
-            combat.combatJJ(J1, J2);
+             InterfaceCombattre serveur = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
+                        Monstre m = new Monstre("gaagaaaaaaaa");
+                        Personnage p1 = new Personnage("Mamadou", 1);
+                        Personnage p2 = new Personnage("Mamdouuuu", 1);
+                        serveur.combatMJ(m, p1);
+                      
             
             
             
