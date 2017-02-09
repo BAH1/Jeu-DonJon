@@ -64,8 +64,8 @@ public class Monstre  implements Serializable{
         this.vieMonstre = vieMonstre;
     }
     
-     public void attaquerPersonnage(InterfaceClient client) throws RemoteException{
-        client.setVie(client.getVie()-1);
+     public void attaquerPersonnage(Personnage p) throws RemoteException{
+        p.setVie(p.getVieJoueur()-1);
 }
 
     public boolean isEtatMonstre() {

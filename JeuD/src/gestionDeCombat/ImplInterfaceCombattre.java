@@ -48,7 +48,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
         Random r=new Random();
         String choix=new String();
         Monstre m=lesMonstre.get(client.getNumeropiece());
-         
+        Personnage p = new Personnage();
          
         if(m.isEtatMonstre()==false)
         {
@@ -61,7 +61,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                 if(d>2)
                 {
                     client.afficher("Monstre vous attaque "+m.getNomMonstre());
-                    m.attaquerPersonnage(client);
+                    m.attaquerPersonnage(p);
                     client.afficher("Votre nombre de vie est "+client.getVie());
                     client.afficher("Tapez q pour fuir");
                     choix=client.choixclient();
@@ -77,6 +77,18 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
              
             if(m.getVieMonstre()==0)
             {
+                client.afficher("Monstre is dead");
+                client.afficher("Votre nombre de vie est "+client.getVie());
+                p.ajouterVieJoueur(1);
+                client.afficher("Votre nombre de vie est apres "+client.getVie());
+                
+            }
+            else if(p.getVieJoueur()==0)
+            {
+                client.afficher("Client is dead "+p.getNom());
+                client.afficher("La vie du monstre "+m.getVieMonstre());
+                m.setVieMonstre(1);
+                client.afficher("La vie du monstre apres "+m.getVieMonstre());
                 
             }
             
