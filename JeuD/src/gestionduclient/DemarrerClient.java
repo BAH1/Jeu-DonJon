@@ -26,7 +26,8 @@ public class DemarrerClient {
            String choix=new String();
            String msg = new String();
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
-         
+         InterfaceCombattre serveurCombat = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
+           ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
             ImplementationClient client=new ImplementationClient();
             client.saisirPseudo();
             stub.connexion(client);
@@ -40,11 +41,12 @@ public class DemarrerClient {
             {
                 client.afficher(stub.InformationSurlaDestination(client));
                 stub.deplacerJoueur(client.choixclient(),client); 
+                serveurCombat.combattreMonstre(client);
                 
             }
             else  if(Integer.parseInt(choix)==2)
             {
-               ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
+             
                                        serveur.enregistrerClient(client,client.getNumeropiece());
                                       do
                                        {
@@ -61,16 +63,14 @@ public class DemarrerClient {
                                       
 
             }
-             else  if(Integer.parseInt(choix)==3){ 
-             InterfaceCombattre serveur = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
-                        Monstre M = new Monstre("gaagaaaaaaaa");
-                        Personnage p1 = new Personnage(client.getNom(), 1);
-                        Personnage p2 = new Personnage(client.getNom(), 1);
-                        serveur.combatMJ(M, p1);
-             }
+            
+             
+                       
+                        
+             
            
     
-            }while(Integer.parseInt(choix)!=4);
+            }while(Integer.parseInt(choix)!=3);
             System.exit(0);
     }
 }

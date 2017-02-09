@@ -6,13 +6,14 @@
 package gestionPersonnage;
 
 import gestionDeCombat.Monstre;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 
 /**
  *
  * @author elhadj
  */
-public class Personnage  {
+public class Personnage implements Serializable{
    // private Scanner sc=new Scanner(System.in);
     private boolean etatpersonnage = false;
     private String nom;

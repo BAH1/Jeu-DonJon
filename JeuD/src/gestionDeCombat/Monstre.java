@@ -6,20 +6,24 @@
 package gestionDeCombat;
 
 import gestionPersonnage.Personnage;
+import gestionduclient.InterfaceClient;
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
  *
  * @author elhadj
  */
-public class Monstre{
+public class Monstre  implements Serializable{
     
     private String nomMonstre;
     private Integer vieMonstre = 5;
-    private boolean etatMonstre = false;
+    private boolean etatMonstre;
     public Monstre(String pnomMonstre) {
         this.nomMonstre = pnomMonstre;
         vieMonstre=5;
+        etatMonstre=false;
     }
 
     
@@ -60,9 +64,8 @@ public class Monstre{
         this.vieMonstre = vieMonstre;
     }
     
-     public void attaquerPersonnage(Personnage p){
-        System.out.println("Monstre "+getNomMonstre()+ "attaque le personnage " +p.getNom());
-        p.retirerVieJoueur(1);
+     public void attaquerPersonnage(InterfaceClient client) throws RemoteException{
+        client.setVie(client.getVie()-1);
 }
 
     public boolean isEtatMonstre() {

@@ -46,6 +46,7 @@ public class demarrerServeur {
                        
                     LocateRegistry.createRegistry(1097);
 		      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
+                       comb.initMonstreSalle();
 		        System.out.println(comb.toString());
                        // comb.InitMonstreSalle();
 	              Naming.rebind("rmi://localhost:1097/combat", comb);  

@@ -5,6 +5,7 @@
  */
 package gestionduclient;
 
+import gestionDeCombat.Monstre;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -16,13 +17,15 @@ public interface InterfaceClient extends Remote{
     public void afficherEtatConnexion(int numeroPiece)throws RemoteException;
     public void setNumeropiece(int numeropiece)throws RemoteException;
      public String getNom() throws RemoteException;
-     public void Menu() throws RemoteException;
+  
      public String choixclient() throws RemoteException;
      public void afficher(String s) throws RemoteException;
      public String envoyerMessage()throws RemoteException;
-    public void recupererMessage(String message)throws RemoteException;
-    public int getNumeropiece()throws RemoteException;
-    public void seConnecterAuChat()throws RemoteException;
-    public void afficherNotification()throws RemoteException;
-     public void setNom(String nom)throws RemoteException;  
+     public void recupererMessage(String message)throws RemoteException;
+     public int getNumeropiece()throws RemoteException;
+     public void afficherNotification()throws RemoteException;
+     public void setNom(String nom)throws RemoteException; 
+     public void setVie(int vie) throws RemoteException;
+     public int getVie() throws RemoteException;
+     public void retirerVieMonstre(Monstre monstre) throws RemoteException;
 }

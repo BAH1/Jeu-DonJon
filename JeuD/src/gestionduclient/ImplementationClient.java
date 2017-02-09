@@ -5,6 +5,7 @@
  */
 package gestionduclient;
 
+import gestionDeCombat.Monstre;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
@@ -18,10 +19,12 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     private String nom;
     private int numeropiece;
     private Scanner sc;
+    private int vie;
     public ImplementationClient()throws RemoteException
     {
         super();
       sc=new Scanner(System.in);
+      vie=10;
     }
     
     public void saisirPseudo()
@@ -64,7 +67,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
              System.out.println("Votre pseudo est trop court");
          
     }
-    public void Menu() throws RemoteException
+    public void Menu() 
     {
         System.out.println("1.pour se deplacer ");
          System.out.println("2.pour chatter ");
@@ -108,15 +111,24 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
        
     }
 
-    @Override
-    public void seConnecterAuChat() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public void afficherNotification() throws RemoteException {
      //To change body of generated methods, choose Tools | Templates.
         System.out.println("D'autre joueurs sont présents dans la pièce");
+    }
+    public void retirerVieMonstre(Monstre monstre) throws RemoteException
+    {
+        monstre.retirerVieMonstre(1);
+    }
+
+    public int getVie() throws RemoteException{
+        return vie;
+    }
+
+    public void setVie(int vie) throws RemoteException{
+        this.vie = vie;
     }
   
     

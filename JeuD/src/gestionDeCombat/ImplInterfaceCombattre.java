@@ -7,6 +7,7 @@ package gestionDeCombat;
 
 import gestionPersonnage.Personnage;
 import gestionduLabyrinthe.ImplementationDuLabyrinthe;
+import gestionduclient.InterfaceClient;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -19,30 +20,74 @@ import java.util.Scanner;
  */
 public class ImplInterfaceCombattre extends UnicastRemoteObject implements InterfaceCombattre{
     
-   private  ArrayList<Monstre>lesMonstre;
+   
    private String tabNameMonstre[]={"CELL","BOUBOU","BOUBOUGENTIL","GOKUBLACK",
-   "DRAGON","DRAGONBLACK","DINO","NGORO","CHIVA"};
+   "DRAGON","DRAGONBLACK","DINO","NGORO","CHIVA","TATA"};
     
-    
+    private ArrayList<Monstre>lesMonstre;
     String porte;
     
     
       public ImplInterfaceCombattre() throws RemoteException {
 		super();
                 lesMonstre=new ArrayList<>();
+               
 	}
     
-/*    public void InitMonstreSalle()
+     public void initMonstreSalle()
     {
       for(int i=0;i<10;i++)
       {
          lesMonstre.add(new Monstre(tabNameMonstre[i]));
       }
-    }*/
+    }
     
+    @Override
+    
+    public void combattreMonstre(InterfaceClient client) throws RemoteException {
+        Random r=new Random();
+        String choix=new String();
+        Monstre m=lesMonstre.get(client.getNumeropiece());
+         
+         
+        if(m.isEtatMonstre()==false)
+        {
+            client.afficher("Debut contre "+m.getNomMonstre());
+            m.setEtatMonstre(true);
+            do
+            {
+                int d = r.nextInt(4);
+                
+                if(d>2)
+                {
+                    client.afficher("Monstre vous attaque "+m.getNomMonstre());
+                    m.attaquerPersonnage(client);
+                    client.afficher("Votre nombre de vie est "+client.getVie());
+                    client.afficher("Tapez q pour fuir");
+                    choix=client.choixclient();
+                }
+                else 
+                {
+                    client.afficher("Attaque de "+client.getNom());
+                    m.retirerVieMonstre(1);
+                    client.afficher("Nombre de vie du monstre  "+m.getVieMonstre());
+                }
+                
+            }while(client.getVie()!=0 && m.getVieMonstre()!=0 && !choix.equals("q"));
+             
+            if(m.getVieMonstre()==0)
+            {
+                
+            }
+            
+        }
+      
+    }
+   /*
     public void combatMJ (Monstre m, Personnage p) throws RemoteException  {
             Random rand = new Random();
-      /*      m.Menu();
+         
+           m.Menu();
             Integer choix=Integer.parseInt(m.Menu());
         System.out.println(choix);
     if(choix==1)   {  
@@ -87,7 +132,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
     { 
             ImplementationDuLabyrinthe la=new ImplementationDuLabyrinthe("Savane");
                   
-            porte=sc.nextLine();
+          //  porte=sc.nextLine();
                   //la.deplacerJoueur(j.getNomjoueur(), porte);
     }
  if(choix==3) // envoyer Message
@@ -98,8 +143,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
             
  {
      
-            }*/
-            
+            }
 }
  /*   
     public void combatJJ (Personnage p1, Personnage p2) throws RemoteException{
@@ -166,6 +210,6 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
         System.out.println("a");
     }
 */
-   
+
     
     }

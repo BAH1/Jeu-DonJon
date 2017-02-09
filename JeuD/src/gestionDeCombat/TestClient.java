@@ -19,11 +19,12 @@ public class TestClient {
       public static void main(String[] args) throws NotBoundException, MalformedURLException {
 		// TODO Auto-generated method stub
 	try {
-             InterfaceCombattre serveur = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
+                          InterfaceCombattre serveur=(InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
                         Monstre m = new Monstre("gaagaaaaaaaa");
                         Personnage p1 = new Personnage("Mamadou", 1);
                         Personnage p2 = new Personnage("Mamdouuuu", 1);
-                        serveur.combatMJ(m, p1);
+                        Monstre n=new Monstre("diallo");
+                    //    serveur.combatMJ(n, p1);
                       
             
             

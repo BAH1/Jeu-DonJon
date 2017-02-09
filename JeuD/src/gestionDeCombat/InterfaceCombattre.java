@@ -6,6 +6,7 @@
 package gestionDeCombat;
 
 import gestionPersonnage.Personnage;
+import gestionduclient.InterfaceClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -15,7 +16,8 @@ import java.rmi.RemoteException;
  */
 public interface InterfaceCombattre extends Remote{
     
-    public void combatMJ (Monstre m, Personnage p) throws RemoteException;
+  //  public void combatMJ (Monstre m, Personnage p) throws RemoteException;
+    public void combattreMonstre(InterfaceClient client)throws RemoteException;
     //public void combatJJ (Personnage p1, Personnage p2) throws RemoteException; 
     //public void a()throws RemoteException;
 }
