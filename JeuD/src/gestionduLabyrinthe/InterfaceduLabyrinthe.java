@@ -5,6 +5,9 @@
  */
 package gestionduLabyrinthe;
 
+import gestionPersonnage.ListeClientParPiece;
+import gestionPersonnage.ListePersonnage;
+import gestionPersonnage.Personnage;
 import gestionduclient.InterfaceClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,10 +20,13 @@ import java.util.ArrayList;
  */
 public interface InterfaceduLabyrinthe extends Remote{
     
-     public void connexion(InterfaceClient client) throws RemoteException;
+    public void connexion(InterfaceClient client) throws RemoteException;
      //public void ajouterClient(InterfaceClient client)throws RemoteException;
-      public String InformationSurlaDestination(InterfaceClient client) throws RemoteException;
+    public String InformationSurlaDestination(InterfaceClient client) throws RemoteException;
        public void deplacerJoueur(String choix,InterfaceClient client) throws RemoteException;
-        public void retirerClient(InterfaceClient client) throws RemoteException;
+       public int  recupererNumeroPiece(InterfaceClient client)throws RemoteException;
+       public ArrayList<Personnage> recupererListe(InterfaceClient client)throws RemoteException;
+               
+      //  public void Deconnexion(InterfaceClient client)throws RemoteException;*/
 }
 

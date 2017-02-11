@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package gestionduLabyrinthe;
-
-import gestionDeCombat.ImplInterfaceCombattre;
 import gestionduchat.ServerChatImpl;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -27,30 +25,29 @@ public class demarrerServeur {
          */
         LocateRegistry.createRegistry(1099);
         
+        
         ImplementationDuLabyrinthe lab=new ImplementationDuLabyrinthe("bourourhe");
         lab.CreationDuLabyrinthe();
         System.out.println(""+lab.toString());
         /**
          * on créé un objet vers lequel on va lier le client,on lance parallèlement le serveur de chat sur le port 1098
          */
-        Naming.rebind("rmi://localhost:1099/by", lab);
-        
-          //  LocateRegistry.createRegistry(1098);
-                        ServerChatImpl s=new ServerChatImpl();
-                       System.out.println(""+s.toString());
-                       try {
-                           Naming.rebind("rmi://localhost:1099/RMIT",s);
-                       } catch (MalformedURLException ex) {
-                           Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
-                       }
-                       
+      Naming.rebind("rmi://localhost:1099/by", lab);
+      ServerChatImpl s=new ServerChatImpl();
+      System.out.println(""+s.toString());
+       try {
+             Naming.rebind("rmi://localhost:1099/RMIT",s);
+        } catch (MalformedURLException ex) {
+      Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      /*                 
                     LocateRegistry.createRegistry(1097);
 		      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
                        comb.initMonstreSalle();
 		        System.out.println(comb.toString());
                        // comb.InitMonstreSalle();
 	              Naming.rebind("rmi://localhost:1097/combat", comb);  
-                               
+          */                     
                     
     }
     

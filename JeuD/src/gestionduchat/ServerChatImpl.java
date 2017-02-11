@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package gestionduchat;
+import gestionPersonnage.ListeClientParPiece;
+import gestionPersonnage.ListePersonnage;
+import gestionPersonnage.Personnage;
 import gestiondelabaseDeDonnee.Registre;
 import gestionduclient.InterfaceClient;
 import java.rmi.RemoteException;
@@ -15,48 +18,49 @@ import java.util.ArrayList;
  * @author elhadj
  */
 public class ServerChatImpl extends UnicastRemoteObject implements ServeurChat{
-    private ArrayList<InterfaceClient>tabclient;
+    
     private ArrayList<String>registre;
     private Registre base;
-    public ServerChatImpl() throws RemoteException{
-       tabclient=new ArrayList<>();
+    private ArrayList<Personnage> liste;
+    private int numeropiece;
+    public ServerChatImpl()throws RemoteException{
        registre=new ArrayList<>();
        base=new Registre();
        base.connexionBD();
+       liste=new ArrayList<>();
     }
     
-
-    @Override
-    public void envoyerMessageAtous(int numeroPiece) throws RemoteException {
-         //To change body of generated methods, choose Tools | Templates.
+    public void broadcasterMessage() throws RemoteException
+    {
          String s=new String();
          String requete;
-         requete="select message from \"MESSAGEPIECE\" where numerop='"+numeroPiece+"'" ;
+         requete="select message from \"MESSAGEPIECE\" where numerop='"+this.numeropiece+"'" ;
      
          s=base.executerRequete(requete);
-        
-         
-         for(InterfaceClient c:tabclient)
+         for(Personnage p:liste)
          {
-             if(c.getNumeropiece()==numeroPiece)
-             c.recupererMessage(s);
+             p.getClient().afficher(s);
          }
     }
 
+   
+   
     @Override
-    public void enregistrerClient(InterfaceClient c,int numero) throws RemoteException {
-        //To change body of generated methods, choose Tools | Templates.
-      tabclient.add(c);
+    public void recupererListeClient(ArrayList<Personnage> liste,int numeroP) throws RemoteException {
+     this.liste=liste;
+     this.numeropiece=numeroP;
     }
 
     @Override
-    public void recevoirMessage(String message,InterfaceClient client) throws RemoteException {
-        //To change body of generated methods, choose Tools | Templates.
-       String requete;
-       requete="INSERT INTO \"MESSAGEPIECE\" VALUES('"+client.getNumeropiece()+"','"+client.getNom()+"'";
+    public void recupererMessage(String message, InterfaceClient client) throws RemoteException {
+      String requete;
+       requete="INSERT INTO \"MESSAGEPIECE\" VALUES('"+this.numeropiece+"','"+client.getNom()+"'";
        requete+=",CURRENT_TIMESTAMP,'"+message+"')";
        base.insertion(requete);
-            
+   
     }
+    
+
+    
     
 }

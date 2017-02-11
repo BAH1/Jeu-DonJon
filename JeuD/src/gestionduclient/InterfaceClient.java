@@ -5,7 +5,6 @@
  */
 package gestionduclient;
 
-import gestionDeCombat.Monstre;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -27,5 +26,5 @@ public interface InterfaceClient extends Remote{
      public void setNom(String nom)throws RemoteException; 
      public void setVie(int vie) throws RemoteException;
      public int getVie() throws RemoteException;
-     public void retirerVieMonstre(Monstre monstre) throws RemoteException;
+    
 }

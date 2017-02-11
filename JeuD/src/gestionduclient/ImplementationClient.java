@@ -5,7 +5,7 @@
  */
 package gestionduclient;
 
-import gestionDeCombat.Monstre;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author elhadj
  */
-public class ImplementationClient extends UnicastRemoteObject implements InterfaceClient{
+public class ImplementationClient extends UnicastRemoteObject implements InterfaceClient,Serializable{
     
     private String nom;
     private int numeropiece;
@@ -118,11 +118,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
      //To change body of generated methods, choose Tools | Templates.
         System.out.println("D'autre joueurs sont présents dans la pièce");
     }
-    public void retirerVieMonstre(Monstre monstre) throws RemoteException
-    {
-        monstre.retirerVieMonstre(1);
-    }
-
+    
     public int getVie() throws RemoteException{
         return vie;
     }

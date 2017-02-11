@@ -6,9 +6,12 @@
 package gestionduchat;
 
 
+import gestionPersonnage.ListeClientParPiece;
+import gestionPersonnage.Personnage;
 import gestionduclient.InterfaceClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,8 +19,10 @@ import java.rmi.RemoteException;
  */
 public interface ServeurChat extends  Remote{
     
-    public void  envoyerMessageAtous(int numeroPiece) throws RemoteException;
-    public void  enregistrerClient(InterfaceClient c,int numero)throws RemoteException;
-    public void  recevoirMessage(String message,InterfaceClient client)throws RemoteException;
+   
+    public void recupererListeClient(ArrayList<Personnage> liste,int numeroP) throws RemoteException;
+    public void broadcasterMessage() throws RemoteException;
+    public void recupererMessage(String message,InterfaceClient client)throws RemoteException;
+ 
    
 }

@@ -5,8 +5,6 @@
  */
 package gestionduclient;
 
-import gestionDeCombat.InterfaceCombattre;
-import gestionDeCombat.Monstre;
 import gestionPersonnage.Personnage;
 import gestionduLabyrinthe.InterfaceduLabyrinthe;
 import gestionduchat.ServeurChat;
@@ -22,12 +20,12 @@ import java.rmi.RemoteException;
 public class DemarrerClient {
     
        public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
-        
+       
            String choix=new String();
            String msg = new String();
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
-         InterfaceCombattre serveurCombat = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
-           ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
+   //      InterfaceCombattre serveurCombat = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
+             ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
             ImplementationClient client=new ImplementationClient();
             client.saisirPseudo();
             stub.connexion(client);
@@ -39,23 +37,24 @@ public class DemarrerClient {
             
             if(Integer.parseInt(choix)==1)
             {
-                client.afficher(stub.InformationSurlaDestination(client));
-                stub.deplacerJoueur(client.choixclient(),client); 
-                serveurCombat.combattreMonstre(client);
+               client.afficher(stub.InformationSurlaDestination(client));
+               
+              stub.deplacerJoueur(client.choixclient(),client); 
+               /* serveurCombat.combattreMonstre(client);
+                          */
                 
-            }
+           }
             else  if(Integer.parseInt(choix)==2)
             {
-             
-                                       serveur.enregistrerClient(client,client.getNumeropiece());
+                                     
+                                 serveur.recupererListeClient(stub.recupererListe(client),stub.recupererNumeroPiece(client));
                                       do
                                        {
                                            if(!msg.equals("q"))
                                            {
                                            msg=client.envoyerMessage();
-                                           serveur.recevoirMessage(msg,client);
-                                           serveur.envoyerMessageAtous(client.getNumeropiece());
-                                              
+                                         serveur.recupererMessage(msg, client);
+                                           serveur.broadcasterMessage();
                                            }
                                          
                                            
@@ -71,6 +70,7 @@ public class DemarrerClient {
            
     
             }while(Integer.parseInt(choix)!=3);
+       
             System.exit(0);
     }
 }

@@ -5,25 +5,25 @@
  */
 package gestionPersonnage;
 
-import gestionDeCombat.Monstre;
+
+import gestionduclient.InterfaceClient;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
-/**
- *
- * @author elhadj
- */
+
 public class Personnage implements Serializable{
-   // private Scanner sc=new Scanner(System.in);
+  
     private boolean etatpersonnage = false;
     private String nom;
     private int numeropiece;
     private Integer vieJoueur = 10;
-
-    public Personnage(String nom, int numeropiece) {
+    private InterfaceClient client;
+    public Personnage(String nom, int numeropiece,InterfaceClient client) {
         this.nom = nom;
         this.numeropiece = numeropiece;
+        this.client=client;
     }
+    
     public  Personnage()
     {
         
@@ -68,10 +68,7 @@ public class Personnage implements Serializable{
     }
     
     
-     public void attaquerMonstre(Monstre M){
-        System.out.println("Joueur"+getNom()+"attaque le Monstre"+M);
-        M.retirerVieMonstre(1);
-}
+    
      
      public void attaquerpersonnage(Personnage p){
         System.out.println("Joueur"+getNom()+"attaque le personnage "+p.getNom());
@@ -122,4 +119,12 @@ public class Personnage implements Serializable{
     }
     
   */  
+
+    public InterfaceClient getClient() {
+        return client;
+    }
+
+    public void setClient(InterfaceClient client) {
+        this.client = client;
+    }
 }
