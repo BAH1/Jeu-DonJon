@@ -46,7 +46,7 @@ public class demarrerServeur {
                       Naming.rebind("rmi://localhost:1097/combat", comb);
                       
 		     
-                       //comb.initMonstreSalle();
+                       comb.initMonstreSalle();
 		        System.out.println(comb.toString());
                        // comb.InitMonstreSalle();
       
