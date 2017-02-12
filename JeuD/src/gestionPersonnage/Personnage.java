@@ -105,7 +105,7 @@ public class Personnage implements Serializable{
     {
         return "Mr "+nom+" est dans la pièce "+numeropiece;
     }
-/*
+
     public Scanner getSc() {
         return sc;
     }
@@ -114,15 +114,8 @@ public class Personnage implements Serializable{
         this.sc = sc;
     }
 
-    public boolean isEtatpersonnage() {
-        return etatpersonnage;
-    }
-
-    public void setEtatpersonnage(boolean etatpersonnage) {
-        this.etatpersonnage = etatpersonnage;
-    }
     
-  */  
+  
 
     public InterfaceClient getClient() {
         return client;

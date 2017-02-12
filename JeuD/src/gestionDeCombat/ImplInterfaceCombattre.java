@@ -57,6 +57,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
     public void combattreMonstre(Personnage p) throws RemoteException {
         Random r=new Random();
         String choix=new String();
+        
         Monstre m = lesMonstre.get(p.getNumeropiece());
         //Personnage p = new Personnage();
          

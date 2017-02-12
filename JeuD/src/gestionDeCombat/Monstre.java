@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author elhadj
+ * @author M1stri
  */
 public class Monstre  implements Serializable{
     

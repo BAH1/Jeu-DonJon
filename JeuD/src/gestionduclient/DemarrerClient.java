@@ -28,6 +28,7 @@ public class DemarrerClient {
          InterfaceCombat serverCombat = (InterfaceCombat)Naming.lookup("rmi://localhost:1097/combat");
          ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
           ImplementationClient client=new ImplementationClient();
+          
            serverCombat.initMonstreSalle();
             client.saisirPseudo();
             stub.connexion(client);

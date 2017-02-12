@@ -19,6 +19,7 @@ public interface InterfaceCombat extends Remote {
     public void combattreMonstre(Personnage p) throws RemoteException;
     //public void combatMJ (Monstre m, Personnage p) throws RemoteException;
     //public void combatJJ (Personnage p1, Personnage p2) throws RemoteException;
+    
     public void initMonstreSalle() throws RemoteException;
     public void combattreJoueur(Personnage p1) throws RemoteException;
 }
