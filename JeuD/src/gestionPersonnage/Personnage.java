@@ -9,15 +9,20 @@ package gestionPersonnage;
 import gestionduclient.InterfaceClient;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
 
 public class Personnage implements Serializable{
-  
+    private Scanner sc;
     private boolean etatpersonnage = false;
     private String nom;
     private int numeropiece;
     private Integer vieJoueur = 10;
     private InterfaceClient client;
+    public Personnage(String nom, int numeropiece) {
+        this.nom = nom;
+        this.numeropiece = numeropiece;
+    }
     public Personnage(String nom, int numeropiece,InterfaceClient client) {
         this.nom = nom;
         this.numeropiece = numeropiece;
@@ -71,7 +76,6 @@ public class Personnage implements Serializable{
     
      
      public void attaquerpersonnage(Personnage p){
-        System.out.println("Joueur"+getNom()+"attaque le personnage "+p.getNom());
         p.retirerVieJoueur(1);
 }
      
@@ -127,4 +131,22 @@ public class Personnage implements Serializable{
     public void setClient(InterfaceClient client) {
         this.client = client;
     }
+
+    public boolean isEtatpersonnage() {
+        return etatpersonnage;
+    }
+
+    public void setEtatpersonnage(boolean etatpersonnage) {
+        this.etatpersonnage = etatpersonnage;
+    }
+    
+     public void afficher(String s) throws RemoteException {
+       //To change body of generated methods, choose Tools | Templates.
+        System.out.println(s);
+    }
+     public String choixJoueur() throws RemoteException
+    {
+       return sc.nextLine();
+    }
+    
 }

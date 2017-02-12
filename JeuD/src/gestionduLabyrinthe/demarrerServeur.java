@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package gestionduLabyrinthe;
+import gestionDeCombat.ImplInterfaceCombattre;
+import gestionDeCombat.Monstre;
 import gestionduchat.ServerChatImpl;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -24,8 +26,6 @@ public class demarrerServeur {
          * on lance le serveur sur le port 99
          */
         LocateRegistry.createRegistry(1099);
-        
-        
         ImplementationDuLabyrinthe lab=new ImplementationDuLabyrinthe("bourourhe");
         lab.CreationDuLabyrinthe();
         System.out.println(""+lab.toString());
@@ -40,14 +40,17 @@ public class demarrerServeur {
         } catch (MalformedURLException ex) {
       Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
       }
-      /*                 
-                    LocateRegistry.createRegistry(1097);
-		      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
-                       comb.initMonstreSalle();
+                    
+                      LocateRegistry.createRegistry(1097);
+                      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
+                      Naming.rebind("rmi://localhost:1097/combat", comb);
+                      
+		     
+                       //comb.initMonstreSalle();
 		        System.out.println(comb.toString());
                        // comb.InitMonstreSalle();
-	              Naming.rebind("rmi://localhost:1097/combat", comb);  
-          */                     
+      
+         
                     
     }
     

@@ -5,6 +5,7 @@
  */
 package gestionduclient;
 
+import gestionDeCombat.InterfaceCombat;
 import gestionPersonnage.Personnage;
 import gestionduLabyrinthe.InterfaceduLabyrinthe;
 import gestionduchat.ServeurChat;
@@ -24,9 +25,10 @@ public class DemarrerClient {
            String choix=new String();
            String msg = new String();
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
-   //      InterfaceCombattre serveurCombat = (InterfaceCombattre)Naming.lookup("rmi://localhost:1097/combat");
-             ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
-            ImplementationClient client=new ImplementationClient();
+         InterfaceCombat serverCombat = (InterfaceCombat)Naming.lookup("rmi://localhost:1097/combat");
+         ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
+          ImplementationClient client=new ImplementationClient();
+           serverCombat.initMonstreSalle();
             client.saisirPseudo();
             stub.connexion(client);
               do
@@ -38,8 +40,11 @@ public class DemarrerClient {
             if(Integer.parseInt(choix)==1)
             {
                client.afficher(stub.InformationSurlaDestination(client));
-               
-              stub.deplacerJoueur(client.choixclient(),client); 
+               Personnage p1 = new Personnage(client.getNom(), client.getNumeropiece(), client);
+               p1.toString();
+               //serverCombat.combattreMonstre(p);
+               serverCombat.combattreJoueur(p1);
+              //stub.deplacerJoueur(client.choixclient(),client); 
                /* serveurCombat.combattreMonstre(client);
                           */
                 
