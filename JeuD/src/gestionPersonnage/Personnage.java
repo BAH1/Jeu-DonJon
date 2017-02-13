@@ -18,6 +18,7 @@ public class Personnage implements Serializable{
     private String nom;
     private int numeropiece;
     private Integer vieJoueur = 10;
+    private int test=0;
     private InterfaceClient client;
     public Personnage(String nom, int numeropiece) {
         this.nom = nom;
@@ -140,6 +141,15 @@ public class Personnage implements Serializable{
      public String choixJoueur() throws RemoteException
     {
        return sc.nextLine();
+    }
+
+    public int getTest() throws RemoteException {
+        return client.getEtat();
+    }
+
+    public void setTest(int test) throws RemoteException {
+        client.setEtat(test);
+        this.test = client.getEtat();
     }
     
 }

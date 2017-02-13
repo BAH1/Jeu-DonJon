@@ -6,7 +6,7 @@
 package gestionduclient;
 
 import gestionDeCombat.InterfaceCombat;
-import gestionPersonnage.Personnage;
+import gestionPersonnage.ListePersonnage;
 import gestionduLabyrinthe.InterfaceduLabyrinthe;
 import gestionduchat.ServeurChat;
 import java.net.MalformedURLException;
@@ -29,7 +29,6 @@ public class DemarrerClient {
          ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
           ImplementationClient client=new ImplementationClient();
           
-           serverCombat.initMonstreSalle();
             client.saisirPseudo();
             stub.connexion(client);
               do
@@ -41,13 +40,15 @@ public class DemarrerClient {
             if(Integer.parseInt(choix)==1)
             {
                client.afficher(stub.InformationSurlaDestination(client));
-               Personnage p1 = new Personnage(client.getNom(), client.getNumeropiece(), client);
-               p1.toString();
-               //serverCombat.combattreMonstre(p);
-               serverCombat.combattreJoueur(p1);
-              //stub.deplacerJoueur(client.choixclient(),client); 
-               /* serveurCombat.combattreMonstre(client);
-                          */
+               stub.deplacerJoueur(client.choixclient(),client); 
+              serverCombat.recupererListeClient(stub.recupererListe(client), stub.recupererNumeroPiece(client));
+              serverCombat.combattreMonstre(client);
+              if(serverCombat.nombreDeJoueur()>1)
+              {
+                  client.afficher(serverCombat.listePersonnage());
+                  client.MenuAttaque();
+                  serverCombat.combattreJoueur(client.choixclient(), client);
+              }
                 
            }
             else  if(Integer.parseInt(choix)==2)

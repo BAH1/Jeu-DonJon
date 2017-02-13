@@ -26,5 +26,7 @@ public interface InterfaceClient extends Remote{
      public void setNom(String nom)throws RemoteException; 
      public void setVie(int vie) throws RemoteException;
      public int getVie() throws RemoteException;
+      public int getEtat() throws RemoteException;
+       public void setEtat(int etat) throws RemoteException;
     
 }

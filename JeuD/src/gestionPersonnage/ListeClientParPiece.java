@@ -147,7 +147,7 @@ public class ListeClientParPiece {
           
           if(p.getNom().equals(client.getNom()))
           {
-              p.setNumeropiece(numeroPiece);
+              p.setNumeropiece(numeroPieceDest);
               tab.get(numeroPieceDest).ajouterPersonnage(p);
               tab.get(numeroPiece).supprimerPersonnage(p);
             
@@ -156,6 +156,30 @@ public class ListeClientParPiece {
                     
       }
   }
+  public void afficher(int numeroPiece)
+  {
+      for(Personnage p:tab.get(numeroPiece).getListePerso())
+      {
+          System.out.println(""+p.getNom()+""+p.getNumeropiece());   
+      }
+  }
+    public static void main(String[] args) throws RemoteException {
+        ListeClientParPiece l=new ListeClientParPiece();
+        l.initialiser();
+        ImplementationClient c=new ImplementationClient();
+        c.setNom("DIALLO");
+        Personnage p=new Personnage();
+        p.setNom("DIALLO");
+        p.setClient(c);
+        p.setNumeropiece(1);
+        l.ajouterClientdansPiece(1, p);
+        l.afficher(1);
+        l.deplacerClient(1, c, 2);
+        p=l.getPseudoPersonnage("DIALLO");
+        System.out.println(""+p.getNom()+""+p.getNumeropiece());
+        
+        
+    }
     /**
      * 
      * @return 

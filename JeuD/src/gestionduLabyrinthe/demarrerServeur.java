@@ -48,7 +48,7 @@ public class demarrerServeur {
 		     
                        comb.initMonstreSalle();
 		        System.out.println(comb.toString());
-                       // comb.InitMonstreSalle();
+                     
       
          
                     

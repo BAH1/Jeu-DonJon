@@ -20,6 +20,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     private int numeropiece;
     private Scanner sc;
     private int vie;
+    private int etat=0;
     public ImplementationClient()throws RemoteException
     {
         super();
@@ -67,12 +68,17 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
              System.out.println("Votre pseudo est trop court");
          
     }
+    public void MenuAttaque()
+    {
+        System.out.println("Entrer le nom du joueur que vous désirez attaquer");
+         
+    }
     public void Menu() 
     {
         System.out.println("1.pour se deplacer ");
          System.out.println("2.pour chatter ");
-         System.out.println("3.pour chatter ");
-          System.out.println("4.Quitter ");
+         System.out.println("3.pour quitter ");
+        
         
     }
     public String choixclient() throws RemoteException
@@ -125,6 +131,14 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
 
     public void setVie(int vie) throws RemoteException{
         this.vie = vie;
+    }
+
+    public int getEtat() throws RemoteException{
+        return etat;
+    }
+
+    public void setEtat(int etat) throws RemoteException{
+        this.etat = etat;
     }
   
     

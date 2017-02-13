@@ -5,10 +5,12 @@
  */
 package gestionDeCombat;
 
+import gestionPersonnage.ListePersonnage;
 import gestionPersonnage.Personnage;
 import gestionduclient.InterfaceClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,10 +18,10 @@ import java.rmi.RemoteException;
  */
 public interface InterfaceCombat extends Remote {
     
-    public void combattreMonstre(Personnage p) throws RemoteException;
-    //public void combatMJ (Monstre m, Personnage p) throws RemoteException;
-    //public void combatJJ (Personnage p1, Personnage p2) throws RemoteException;
-    
-    public void initMonstreSalle() throws RemoteException;
-    public void combattreJoueur(Personnage p1) throws RemoteException;
+    public void combattreMonstre(InterfaceClient client) throws RemoteException;
+     public void recupererListeClient(ArrayList<Personnage> liste,int numeroPiece) throws RemoteException;
+      public int nombreDeJoueur() throws RemoteException;
+      public void notification() throws RemoteException;
+      public String listePersonnage()throws RemoteException;
+      public void combattreJoueur(String pseudo,InterfaceClient client) throws RemoteException;
 }

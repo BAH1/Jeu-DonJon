@@ -173,13 +173,14 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
            res=registre.executerRequete(requete);
            requete="UPDATE \"SETROUVER\" SET numeropi='"+res+"' where pseudopi='"
                    +perso.getNom()+"'";
-                         
+                       
               listeclient.deplacerClient(perso.getNumeropiece(), client, Integer.parseInt(res));
               
         
             registre.insertion(requete);
             
             perso=listeclient.getPseudoPersonnage(client.getNom());
+           
             client.afficherEtatConnexion(perso.getNumeropiece());
            notification(perso.getNumeropiece());
     }
