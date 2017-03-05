@@ -6,7 +6,6 @@
 package gestionduclient;
 
 import gestionDeCombat.InterfaceCombat;
-import gestionPersonnage.ListePersonnage;
 import gestionduLabyrinthe.InterfaceduLabyrinthe;
 import gestionduchat.ServeurChat;
 import java.net.MalformedURLException;
@@ -20,10 +19,12 @@ import java.rmi.RemoteException;
  */
 public class DemarrerClient {
     
-       public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
+       public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException, InterruptedException {
        
            String choix=new String();
            String msg = new String();
+           String choixfuir=new String();
+           boolean etat;
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
          InterfaceCombat serverCombat = (InterfaceCombat)Naming.lookup("rmi://localhost:1097/combat");
          ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
@@ -42,13 +43,21 @@ public class DemarrerClient {
                client.afficher(stub.InformationSurlaDestination(client));
                stub.deplacerJoueur(client.choixclient(),client); 
               serverCombat.recupererListeClient(stub.recupererListe(client), stub.recupererNumeroPiece(client));
-              serverCombat.combattreMonstre(client);
-              if(serverCombat.nombreDeJoueur()>1)
+              if(stub.recupererListe(client).size()>1)
               {
-                  client.afficher(serverCombat.listePersonnage());
-                  client.MenuAttaque();
-                  serverCombat.combattreJoueur(client.choixclient(), client);
+                  System.out.println("choisissez ce que vous voulez ");
               }
+               serverCombat.combattreLemonstre(client);
+               do
+               {
+                   
+                    choixfuir=client.choixclient();
+                    if(choixfuir.equals("q"))
+                        serverCombat.fuirCombat();
+               }while(!choixfuir.equals("q") && serverCombat.etatCombat());
+                 
+              
+              
                 
            }
             else  if(Integer.parseInt(choix)==2)

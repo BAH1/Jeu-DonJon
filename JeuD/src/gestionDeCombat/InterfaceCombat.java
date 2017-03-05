@@ -18,10 +18,13 @@ import java.util.ArrayList;
  */
 public interface InterfaceCombat extends Remote {
     
-    public void combattreMonstre(InterfaceClient client) throws RemoteException;
+    //public void combattreMonstre(InterfaceClient client) throws RemoteException;
      public void recupererListeClient(ArrayList<Personnage> liste,int numeroPiece) throws RemoteException;
       public int nombreDeJoueur() throws RemoteException;
       public void notification() throws RemoteException;
       public String listePersonnage()throws RemoteException;
-      public void combattreJoueur(String pseudo,InterfaceClient client) throws RemoteException;
+  //    public void combattreJoueur(String pseudo,InterfaceClient client) throws RemoteException;
+      public void combattreLemonstre(InterfaceClient client) throws RemoteException;
+       public boolean etatCombat ()throws RemoteException;
+       public void fuirCombat ()throws RemoteException;
 }

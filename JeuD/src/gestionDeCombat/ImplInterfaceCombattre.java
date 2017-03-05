@@ -32,12 +32,37 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
     String porte;
     private ArrayList<Personnage> liste;
     private int numeroPiece;
+    private CombatM combatMonstre;
+    private Thread t;
       public ImplInterfaceCombattre() throws RemoteException {
 		super();
                 lesMonstre=new ArrayList<>();
                 liste=new ArrayList<>();
                
 	}
+      
+      /*Combat avec le monstre */
+      
+      
+      public void combattreLemonstre(InterfaceClient client) throws RemoteException
+      {
+          combatMonstre=new CombatM(liste, lesMonstre,client);
+           t=new Thread(combatMonstre);
+          t.start();
+        
+      }
+      public boolean etatCombat ()throws RemoteException
+      {
+       return  t.isAlive();
+      }
+      public void fuirCombat ()throws RemoteException
+      {
+        t.interrupt();
+      }
+      
+      
+      
+      
       public void recupererListeClient(ArrayList<Personnage> liste,int numeroPiece)
       {
           this.liste=liste;
@@ -104,7 +129,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
     }
      
       
-    
+    /*
     @Override
     
     public void combattreMonstre(InterfaceClient client) throws RemoteException {
@@ -132,7 +157,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                     
                     p.getClient().afficher("Votre nombre de vie est "+p.getVieJoueur());
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ImplInterfaceCombattre.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -147,10 +172,12 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                     String vm = "Nombre de vie du monstre  "+m.getVieMonstre();
                     p.getClient().afficher(vm);
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ImplInterfaceCombattre.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                     p.getClient().afficher("Tapez q pour fuir ");
+                     choix=p.getClient().choixclient();
                 }
                 
             }while(p.getVieJoueur()!=0 && m.getVieMonstre()!=0 && !choix.equals("q"));
@@ -254,71 +281,12 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
             
         }
       
-    }
+    }*/
     
     
     
-    
-   /* 
-    public void combatJJ (Personnage p1, Personnage p2) throws RemoteException{
-        Random rand = new Random();
-        p1.Menu();
-        Integer choix=Integer.parseInt(p1.Menu());
-    if(choix==1) 
-        {   
-        while(choix==1){
-        
-                if(p1.isEtatpersonnage()==false &&  p2.isEtatpersonnage()==false)
-                        {
-                            p1.setEtatpersonnage(true);
-                            p2.setEtatpersonnage(true);
-                            int d = rand.nextInt(10);
-                                if(d<=5)
-                                {
-            
-                                            if(p1.getVieJoueur()>0){
-                                                System.out.println("attaque du personnage " +p2.getNom());
-                                                p1.attaquerpersonnage(p2);
-                                            }
-                                            else{ 
-                                                   System.out.println(p1.getVieJoueur());
-                                                   System.out.println("[ "+p1.getNom()+" ] : Vous avez perdu le combat");
-                                                   p2.ajouterVieJoueur(1);
-                                            }
-                                }
-                                else
-                                {  
-                                            if(p2.getVieJoueur()>0){
-                                                System.out.println("attaque du personnage " +p1.getNom());
-                                                p2.attaquerpersonnage(p1);
-                                            }
-                                            else{ 
-                                                   System.out.println(p2.getVieJoueur());
-                                                   System.out.println("[ "+p2.getNom()+" ] : Vous avez perdu le combat");
-                                                   p2.ajouterVieJoueur(1);
-                                            }
-                                }
-                                                
-                                                                     
-                
-                        }
-    }
-        }
- if(choix==2) //appelle de la methode deplacer
-        {
-        
-    }
- else if(choix == 3) // chat
-        { 
-        
-    }
-    else if (choix==4)
-        { 
-        
-        }
-        
-}*/
-
+  
+  
 
 
     
