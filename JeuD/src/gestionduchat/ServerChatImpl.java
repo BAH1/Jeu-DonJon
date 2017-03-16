@@ -12,6 +12,7 @@ import gestionduclient.InterfaceClient;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -21,43 +22,52 @@ public class ServerChatImpl extends UnicastRemoteObject implements ServeurChat{
     
     private ArrayList<String>registre;
     private Registre base;
-    private ArrayList<Personnage> liste;
-    private int numeropiece;
+    private ArrayList<Personnage>  listeP;
     public ServerChatImpl()throws RemoteException{
        registre=new ArrayList<>();
        base=new Registre();
        base.connexionBD();
-       liste=new ArrayList<>();
+       listeP=new ArrayList<>();
     }
     
-    public void broadcasterMessage() throws RemoteException
+    public void broadcasterMessage(int numeropiece) throws RemoteException
     {
-         String s=new String();
+        String s=new String();
          String requete;
-         requete="select message from \"MESSAGEPIECE\" where numerop='"+this.numeropiece+"'" ;
+         requete="select message from \"MESSAGEPIECE\" where numerop='"+numeropiece+"'" ;
      
          s=base.executerRequete(requete);
-         for(Personnage p:liste)
-         {
-             p.getClient().afficher(s);
-         }
+       
+        for(Personnage p:listeP)
+        {
+            if(p.getNumeropiece()==numeropiece)
+            {
+               
+             p.getClient().afficher(s);   
+            }
+             
+        }
+        
     }
 
    
    
-    @Override
-    public void recupererListeClient(ArrayList<Personnage> liste,int numeroP) throws RemoteException {
-     this.liste=liste;
-     this.numeropiece=numeroP;
-    }
+    
 
     @Override
-    public void recupererMessage(String message, InterfaceClient client) throws RemoteException {
+    public void recupererMessage(String message, InterfaceClient client,int numeroP) throws RemoteException {
       String requete;
-       requete="INSERT INTO \"MESSAGEPIECE\" VALUES('"+this.numeropiece+"','"+client.getNom()+"'";
+       requete="INSERT INTO \"MESSAGEPIECE\" VALUES('"+numeroP+"','"+client.getNom()+"'";
        requete+=",CURRENT_TIMESTAMP,'"+message+"')";
        base.insertion(requete);
    
+    }
+
+    @Override
+    public void recupererListeClients(ArrayList<Personnage>  liste) throws RemoteException {
+         //To change body of generated methods, choose Tools | Templates.
+       
+        this.listeP=liste;
     }
     
 

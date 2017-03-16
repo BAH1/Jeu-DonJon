@@ -19,12 +19,17 @@ import java.util.ArrayList;
 public interface InterfaceCombat extends Remote {
     
     //public void combattreMonstre(InterfaceClient client) throws RemoteException;
-     public void recupererListeClient(ArrayList<Personnage> liste,int numeroPiece) throws RemoteException;
+     public void recupererListeClient(ArrayList<Personnage> liste) throws RemoteException;
       public int nombreDeJoueur() throws RemoteException;
       public void notification() throws RemoteException;
       public String listePersonnage()throws RemoteException;
   //    public void combattreJoueur(String pseudo,InterfaceClient client) throws RemoteException;
       public void combattreLemonstre(InterfaceClient client) throws RemoteException;
-       public boolean etatCombat ()throws RemoteException;
-       public void fuirCombat ()throws RemoteException;
+      public boolean etatCombat(InterfaceClient client) throws RemoteException;
+       public void fuirlecombat(String choix,InterfaceClient client) throws RemoteException;
+      public void reinitialiserVieDuMonstre(InterfaceClient client) throws RemoteException;
+      public void combattreJoueur(InterfaceClient client,String pseudo)throws RemoteException;
+      public boolean etatcombatDuJoueur(InterfaceClient client) throws RemoteException;
+      public void fuirCombatEntreJoueur(String choix,InterfaceClient client,String pseudo) throws RemoteException;
+      public int verifierEtatJoueur(InterfaceClient client) throws RemoteException;
 }

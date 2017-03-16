@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author elhadj
  */
-public class demarrerServeur {
+public class DemarrerServeur {
     
     
     public static void main(String[] args) throws RemoteException, MalformedURLException {

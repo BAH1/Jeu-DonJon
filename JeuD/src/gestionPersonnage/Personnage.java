@@ -14,11 +14,11 @@ import java.util.Scanner;
 
 public class Personnage implements Serializable{
     private Scanner sc;
-    private boolean etatpersonnage = false;
     private String nom;
     private int numeropiece;
     private Integer vieJoueur = 10;
-    private int test=0;
+    private Integer nbreCombat=0;
+    
     private InterfaceClient client;
     public Personnage(String nom, int numeropiece) {
         this.nom = nom;
@@ -66,11 +66,11 @@ public class Personnage implements Serializable{
        if(vieJoueur <0){
         vieJoueur=0;
         }
-        System.out.println("la vie du joueur "+nom+":"+vieJoueur);
+       
     }
     public void ajouterVieJoueur(Integer vie) {
         this.vieJoueur += vie;
-       System.out.println("la vie du joueur "+nom+":"+vieJoueur);
+      
     }
     
     
@@ -81,26 +81,7 @@ public class Personnage implements Serializable{
 }
      
      
-     public String Menureduit()
-   {
-       System.out.println("");
-       System.out.println("****2. Pour Vous deplacez (Fuir le combat)******");
-       System.out.println("****3.Envoyer un message************************");
-       System.out.println("****4. Pour quitter*****************************");
-       //return sc.nextLine
-       return null;
-   }
-     
-      public String Menu() throws RemoteException
-    {
-        System.out.println("1.pour se deplacer ");
-         System.out.println("2.pour chatter ");
-          System.out.println("3.Quitter ");
-       //   return sc.nextLine();
-       return null;
-        
-    }
-     
+   
     
     public String toString()
     {
@@ -126,13 +107,6 @@ public class Personnage implements Serializable{
         this.client = client;
     }
 
-    public boolean isEtatpersonnage() {
-        return etatpersonnage;
-    }
-
-    public void setEtatpersonnage(boolean etatpersonnage) {
-        this.etatpersonnage = etatpersonnage;
-    }
     
      public void afficher(String s) throws RemoteException {
        //To change body of generated methods, choose Tools | Templates.
@@ -147,9 +121,14 @@ public class Personnage implements Serializable{
         return client.getEtat();
     }
 
-    public void setTest(int test) throws RemoteException {
-        client.setEtat(test);
-        this.test = client.getEtat();
+    public Integer getNbreCombat() {
+        return nbreCombat;
     }
+
+    public void setNbreCombat(Integer nbreCombat) {
+        this.nbreCombat = nbreCombat;
+    }
+
+   
     
 }

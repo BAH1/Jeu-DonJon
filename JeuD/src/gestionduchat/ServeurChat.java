@@ -7,11 +7,13 @@ package gestionduchat;
 
 
 import gestionPersonnage.ListeClientParPiece;
+import gestionPersonnage.ListePersonnage;
 import gestionPersonnage.Personnage;
 import gestionduclient.InterfaceClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -20,9 +22,9 @@ import java.util.ArrayList;
 public interface ServeurChat extends  Remote{
     
    
-    public void recupererListeClient(ArrayList<Personnage> liste,int numeroP) throws RemoteException;
-    public void broadcasterMessage() throws RemoteException;
-    public void recupererMessage(String message,InterfaceClient client)throws RemoteException;
- 
+  
+    public void broadcasterMessage(int numeropiece) throws RemoteException;
+    public void recupererMessage(String message,InterfaceClient client,int numeroP)throws RemoteException;
+    public void recupererListeClients(ArrayList<Personnage>  liste) throws RemoteException;
    
 }

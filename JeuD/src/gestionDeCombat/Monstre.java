@@ -6,7 +6,6 @@
 package gestionDeCombat;
 
 import gestionPersonnage.Personnage;
-import gestionduclient.InterfaceClient;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Scanner;
@@ -20,14 +19,16 @@ public class Monstre  implements Serializable{
     private String nomMonstre;
     private Integer vieMonstre = 5;
     private boolean etatMonstre;
+    private int nbreAdversaire;
     public Monstre(String pnomMonstre) {
         this.nomMonstre = pnomMonstre;
         vieMonstre=5;
         etatMonstre=false;
+        nbreAdversaire=0;
     }
 
     
-    
+   
     public String getNomMonstre() {
         return nomMonstre;
     }
@@ -74,6 +75,14 @@ public class Monstre  implements Serializable{
 
     public void setEtatMonstre(boolean etatMonstre) {
         this.etatMonstre = etatMonstre;
+    }
+
+    public int getNbreAdversaire() {
+        return nbreAdversaire;
+    }
+
+    public void setNbreAdversaire(int nbreAdversaire) {
+        this.nbreAdversaire = nbreAdversaire;
     }
    
     

@@ -13,6 +13,7 @@ import gestionduclient.InterfaceClient;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -119,7 +120,11 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
           {
               for(Personnage p:listeclient.getTab().get(numeroPiece).getListePerso())
               {
-                  p.getClient().afficherNotification();
+                  try {
+                      p.getClient().afficherNotification();
+                  } catch (Exception e) {
+                  }
+                  
               }
           }
                              
@@ -200,14 +205,38 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
         return listeclient.chercherPersonnage(client.getNom());
     }
     // on recupère la liste des clients dans un salon pour l'envoyer au serveur de chat 
+    
+
     @Override
-    public ArrayList<Personnage> recupererListe(InterfaceClient client) throws RemoteException {
+    public ArrayList<Personnage>  recupererListe() throws RemoteException {
+       //To change body of generated methods, choose Tools | Templates.
+       ArrayList<Personnage>res=new ArrayList<>();
+       for(int i=1;i<10;i++)
+       {
+           for(Personnage p:listeclient.recupererListe(i))
+           {
+               res.add(p);
+           }
+       }
+       return res;
+       
+    }
+    
+    public String afficherPersonnedanspiece(InterfaceClient client) throws RemoteException
+    {
+        String res=new String();
+        for(Personnage p:listeclient.recupererListe(listeclient.chercherPersonnage(client.getNom())))
+        {
+            res+=" "+p.getNom();
+        }
+            return res;
+    }
+    
+  
+     public ArrayList<Personnage> recupererListeParNumero(InterfaceClient client) throws RemoteException {
     return   listeclient.recupererListe(listeclient.chercherPersonnage(client.getNom()));  
     }
 
-    
-  
-    
    
   
   

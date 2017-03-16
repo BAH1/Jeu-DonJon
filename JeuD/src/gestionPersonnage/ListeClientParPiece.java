@@ -7,6 +7,7 @@ package gestionPersonnage;
 
 import gestionduclient.ImplementationClient;
 import gestionduclient.InterfaceClient;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.HashMap;
  *
  * @author elhadj
  */
-public class ListeClientParPiece {
+public class ListeClientParPiece{
     
     private HashMap<Integer,ListePersonnage>tab;
     public ListeClientParPiece()

@@ -12,6 +12,7 @@ import gestionduclient.InterfaceClient;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -25,8 +26,9 @@ public interface InterfaceduLabyrinthe extends Remote{
     public String InformationSurlaDestination(InterfaceClient client) throws RemoteException;
        public void deplacerJoueur(String choix,InterfaceClient client) throws RemoteException;
        public int  recupererNumeroPiece(InterfaceClient client)throws RemoteException;
-       public ArrayList<Personnage> recupererListe(InterfaceClient client)throws RemoteException;
-               
+       public ArrayList<Personnage> recupererListe()throws RemoteException;
+      public ArrayList<Personnage> recupererListeParNumero(InterfaceClient client) throws RemoteException;
+        public String afficherPersonnedanspiece(InterfaceClient client) throws RemoteException;
       //  public void Deconnexion(InterfaceClient client)throws RemoteException;*/
 }
 
