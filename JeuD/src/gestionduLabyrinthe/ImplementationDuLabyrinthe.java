@@ -14,7 +14,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import persistance.ImplementPersistance;
 
 /**
  *
@@ -29,7 +28,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
     private Registre registre;
     private Personnage perso; 
     private ListeClientParPiece listeclient;
-    private ImplementPersistance serverP;
+  
     /**
      * 
      * @param nom

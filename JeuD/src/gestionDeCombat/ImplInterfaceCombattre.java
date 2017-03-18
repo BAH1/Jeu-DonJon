@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import persistance.ImplementPersistance;
+
 
 /**
  *
@@ -96,10 +96,11 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
       public void fuirCombatJoueurAttaquer(String choix,InterfaceClient client) throws RemoteException
       {
           String t[];
-          if(choix.equals("q"))
+          Personnage p1=chercherPersonnage(client.getNom());
+          if(choix.equals("q") && p1.getVieJoueur()!=0)
           {
-              System.err.println("je suis ici ");
-              Personnage p1=chercherPersonnage(client.getNom());
+              
+              
               Iterator<Thread> iterator=listeCombatPersonne.get(p1.getNumeropiece()).iterator();
               while(iterator.hasNext())
           {
@@ -166,16 +167,17 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
       }
       public void fuirCombatEntreJoueur(String choix,InterfaceClient client,String pseudo) throws RemoteException
       {
-          if(choix.equals("q"))
+          Personnage p1=chercherPersonnage(client.getNom());
+          if(choix.equals("q") && p1.getVieJoueur()!=0)
           {
-              Personnage p1=chercherPersonnage(client.getNom());
+              
               Personnage p2=chercherPersonnage(pseudo);
              Iterator<Thread> iterator=listeCombatPersonne.get(p1.getNumeropiece()).iterator();
-             System.err.println("je suis là");
+            
           while(iterator.hasNext())
           {
               Thread thread=iterator.next();
-              System.err.println("+Name:"+thread.getName());
+           
                if(thread.getName().contains(p1.getNom()))
                {
                    
@@ -228,16 +230,18 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
       {
           Monstre m;
           int i=0;
-          if(choix.equals("q"))
+          Personnage p=chercherPersonnage(client.getNom());
+ 
+          if(choix.equals("q") && p.getVieJoueur()!=0)
           {
-                Personnage p=chercherPersonnage(client.getNom());
-                m=lesMonstre.get(p.getNumeropiece());
+                               m=lesMonstre.get(p.getNumeropiece());
              Iterator<Thread> iterator=listeCombat.get(p.getNumeropiece()).iterator();
           while(iterator.hasNext())
           {
               Thread combat=iterator.next();
                if(combat.getName().equals(p.getNom()))
                {
+                   System.err.println("nb av"+m.getNbreAdversaire());
                    combat.interrupt();
                    m.setNbreAdversaire(m.getNbreAdversaire()-1);
                    iterator.remove();

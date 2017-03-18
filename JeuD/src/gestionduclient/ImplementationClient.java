@@ -161,7 +161,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
         String choixfuirM=new String();
         String choixfuir=new String();
         String pseudo=new String();
-        /*
+        
                 serverCombat.combattreLemonstre(this);
                 do
                {
@@ -174,7 +174,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
                }while(!choixfuir.equals("q") && serverCombat.etatCombat(this));
                if(choixfuir.equals("q"))
                  serverCombat.reinitialiserVieDuMonstre(this);
-       */
+       
                   if(stub.personnageViVant(this)>0 && stub.VerificationEtat(this)!=0)
                  {
                   afficher("Personne dans la pièce ");

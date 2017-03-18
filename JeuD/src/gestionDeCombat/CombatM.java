@@ -137,6 +137,7 @@ public class CombatM implements Runnable{
                  p.getClient().afficher("Debut contre "+afficherString(p.getNumeropiece()));
               
               m.setNbreAdversaire(m.getNbreAdversaire()+1);
+                  System.err.println("M adv "+m.getNbreAdversaire());
                 do
             {
                 

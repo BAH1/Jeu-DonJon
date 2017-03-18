@@ -65,6 +65,7 @@ public class Registre {
     {
      String requete;
      requete="UPDATE \"JOUEUR\" SET viejoueur='"+viejoueur+"' where pseudo='"+pseudo+"'";
+        System.err.println(""+requete);
      insertion(requete);
     }
   
