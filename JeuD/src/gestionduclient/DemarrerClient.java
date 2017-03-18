@@ -32,6 +32,8 @@ public class DemarrerClient {
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
          InterfaceCombat serverCombat = (InterfaceCombat)Naming.lookup("rmi://localhost:1097/combat");
          ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
+         InterfaceCombat serverCombatone=(InterfaceCombat)Naming.lookup("rmi://localhost:1099/combatservertwo");
+         InterfaceCombat serverCombatTwo=(InterfaceCombat)Naming.lookup("rmi://localhost:1099/combatservertwo");
           ImplementationClient client=new ImplementationClient();
           
             client.saisirPseudo();
@@ -42,13 +44,20 @@ public class DemarrerClient {
                 choix=client.choixclient();
           
             
-            if(Integer.parseInt(choix)==1)
+            if(choix.equals("1"))
             {
+               do
+               {
                client.afficher(stub.InformationSurlaDestination(client));
                choixrester=client.choixclient();
-               if(!choixrester.equals("r"))
+                
+               }while(!choixrester.equals("R") && !choixrester.equals("N")&& !choixrester.equals("S") && !choixrester.equals("O")&& 
+                       !choixrester.equals("E"));
+                  if(!choixrester.equals("R"))
                stub.deplacerJoueur(choixrester,client);
-               serverCombat.recupererListeClient(stub.recupererListe());
+              // serverCombat.recupererListeClient(stub.recupererListe());
+               serverCombatone.recupererListeClient(stub.recupererListe());
+               serverCombatTwo.recupererListeClient(stub.recupererListe());
               /*  serverCombat.combattreLemonstre(client);
              
                do
@@ -61,8 +70,16 @@ public class DemarrerClient {
                }while(!choixfuir.equals("q") && serverCombat.etatCombat(client));
               
                  serverCombat.reinitialiserVieDuMonstre(client);
+               
              */
-                  if(stub.personnageViVant(client)>0 && stub.VerificationEtat(client)!=0)
+              if(stub.recupererNumeroPiece(client)>4)
+              {
+              client.combattre(serverCombatone, stub);    
+              }
+              else
+              client.combattre(serverCombatTwo, stub);      
+              
+                 /* if(stub.personnageViVant(client)>0 && stub.VerificationEtat(client)!=0)
                  {
                   client.afficher("Personne dans la pièce ");
                   client.afficherPersonneDansLapiece(stub.afficherPersonnedanspiece(client));
@@ -132,11 +149,11 @@ public class DemarrerClient {
                   }
                     
                  }
-               }
+               }*/
              
                 
            }
-            else  if(Integer.parseInt(choix)==2)
+            else  if(choix.equals("2"))
             {
                                      
                                 
@@ -163,7 +180,7 @@ public class DemarrerClient {
              
            
     
-            }while(Integer.parseInt(choix)!=3);
+            }while(!choix.equals("3"));
        
             System.exit(0);
     }

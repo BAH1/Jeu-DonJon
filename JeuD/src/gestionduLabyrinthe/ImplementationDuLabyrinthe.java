@@ -149,7 +149,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
        
        
         requete=registre.MenuPourSeDeplacer(requete);
-        requete+="\n TAPEZ N POUR NORD \n TAPEZ S POUR SUD \n TAPEZ O pour OUEST \n TAPEZ E pour EST";
+        requete+="\n TAPEZ N POUR NORD \n TAPEZ S POUR SUD \n TAPEZ O pour OUEST \n TAPEZ E pour EST \n TAPEZ R POUR RESTER";
        
    
         return requete;

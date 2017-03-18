@@ -140,12 +140,12 @@ public class CombatM implements Runnable{
                 do
             {
                 
-                int d = r.nextInt(3);
+                int d = r.nextInt(4);
              
                
                 if(d>2)
                 {
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(8);
                     String am =""+m.getNomMonstre()+" attaque "+p.getNom();
                     p.getClient().afficher(am);
                     m.attaquerPersonnage(p);
@@ -156,7 +156,7 @@ public class CombatM implements Runnable{
                 }
                 else 
                 {
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(8);
                     String aj =p.getNom()+" attaque "+m.getNomMonstre();
                     p.getClient().afficher(aj);
                     m.retirerVieMonstre(1);
@@ -168,8 +168,7 @@ public class CombatM implements Runnable{
                 }
                  }while(p.getVieJoueur()!=0 && m.getVieMonstre()!=0);
               m.setNbreAdversaire(m.getNbreAdversaire()-1);  
-                
-                  if(m.getVieMonstre()==0)
+            if(m.getVieMonstre()==0)
             {
              
                 p.getClient().afficher("Monstre is dead: "+m.getNomMonstre());
@@ -183,7 +182,7 @@ public class CombatM implements Runnable{
             else 
             {
                 
-                p.getClient().afficher("Vous avez perdu"+p.getNom());
+                p.getClient().afficher("Vous avez perdu "+p.getNom());
                 p.getClient().afficher("Nombre de vie du monstre "+m.getVieMonstre());
                  
                 m.setVieMonstre(m.getVieMonstre()+1);
@@ -196,6 +195,9 @@ public class CombatM implements Runnable{
           {
                   p.getClient().afficher("Votre personnage est Mort deplacer vous dans une autre pièce");
           }
+          if(m.getNbreAdversaire()==0)
+              m.setVieMonstre(5);
+           
         
           }
 

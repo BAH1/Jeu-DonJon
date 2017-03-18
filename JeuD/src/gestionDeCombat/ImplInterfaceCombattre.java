@@ -16,6 +16,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,7 +98,42 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
           String t[];
           if(choix.equals("q"))
           {
+              System.err.println("je suis ici ");
               Personnage p1=chercherPersonnage(client.getNom());
+              Iterator<Thread> iterator=listeCombatPersonne.get(p1.getNumeropiece()).iterator();
+              while(iterator.hasNext())
+          {
+              Thread thread=iterator.next();
+               if(thread.getName().contains(p1.getNom()))
+              {
+                  t=thread.getName().split(" ");
+                  for(int i=0;i<t.length;i++)
+                  {
+                      if(!client.getNom().equals(t[i]))
+                      {
+                          Personnage p2=chercherPersonnage(t[i]);
+                          p2.getClient().afficher("Votre nombre de vie est :"+p2.getVieJoueur());
+                          p2.setNbreCombat(p2.getNbreCombat()-1);
+                          if(p2.getNbreCombat()==0)
+                         {
+                   
+                          p2.setVie(p2.getVieJoueur()+1);
+                          p2.getClient().afficher("Votre Nombre de vie après   "+p2.getVieJoueur());
+                          base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
+                          }
+                      }
+                  }
+                  
+                  thread.interrupt();
+                  p1.setNbreCombat(p1.getNbreCombat()-1);
+                   iterator.remove(); 
+                  
+              }
+          }
+              p1.getClient().afficher("Votre nombre de vie est :"+p1.getVieJoueur());
+              base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
+          
+              /*
               for(Thread thread:listeCombatPersonne.get(p1.getNumeropiece()))
              {
               if(thread.getName().contains(p1.getNom()))
@@ -125,10 +161,8 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                   
                   
               }
-             }
-              p1.getClient().afficher("Votre nombre de vie est :"+p1.getVieJoueur());
-              base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
-          }
+             }*/
+         }
       }
       public void fuirCombatEntreJoueur(String choix,InterfaceClient client,String pseudo) throws RemoteException
       {
@@ -136,6 +170,26 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
           {
               Personnage p1=chercherPersonnage(client.getNom());
               Personnage p2=chercherPersonnage(pseudo);
+             Iterator<Thread> iterator=listeCombatPersonne.get(p1.getNumeropiece()).iterator();
+             System.err.println("je suis là");
+          while(iterator.hasNext())
+          {
+              Thread thread=iterator.next();
+              System.err.println("+Name:"+thread.getName());
+               if(thread.getName().contains(p1.getNom()))
+               {
+                   
+                    thread.interrupt();
+                    p1.setNbreCombat(p1.getNbreCombat()-1);
+                    p2.setNbreCombat(p2.getNbreCombat()-1);
+         
+                   iterator.remove();
+                   
+               }
+                   
+          }
+      
+              /*
               for(Thread thread:listeCombatPersonne.get(p1.getNumeropiece()))
              {
               if(thread.getName().contains(p1.getNom()))
@@ -144,7 +198,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                   p1.setNbreCombat(p1.getNbreCombat()-1);
                   p2.setNbreCombat(p2.getNbreCombat()-1);
               }
-             }
+             }*/
               if(p2.getNbreCombat()==0)
               {
                  p1.getClient().afficher("Fuite de "+p1.getNom());
@@ -168,6 +222,8 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                   
           }
       }
+    
+      
       public void fuirlecombat(String choix,InterfaceClient client) throws RemoteException
       {
           Monstre m;
@@ -176,21 +232,22 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
           {
                 Personnage p=chercherPersonnage(client.getNom());
                 m=lesMonstre.get(p.getNumeropiece());
-            
-                
-          for(Thread combat:listeCombat.get(p.getNumeropiece()))
+             Iterator<Thread> iterator=listeCombat.get(p.getNumeropiece()).iterator();
+          while(iterator.hasNext())
           {
-             if(combat.getName().equals(p.getNom()))
-             {
-                
-              combat.interrupt();
-              m.setNbreAdversaire(m.getNbreAdversaire()-1);
-              
-                 
-           
-             }
-             
+              Thread combat=iterator.next();
+               if(combat.getName().equals(p.getNom()))
+               {
+                   combat.interrupt();
+                   m.setNbreAdversaire(m.getNbreAdversaire()-1);
+                   iterator.remove();
+                   
+               }
+                   
           }
+      
+                   System.err.println("M"+m.getNomMonstre()+" "+m.getNbreAdversaire());
+         
              if(m.getNbreAdversaire()==0)
              {
               p.getClient().afficher("Fuite de "+p.getNom());

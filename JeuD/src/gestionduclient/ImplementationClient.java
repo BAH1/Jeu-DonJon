@@ -5,6 +5,8 @@
  */
 package gestionduclient;
 
+import gestionDeCombat.InterfaceCombat;
+import gestionduLabyrinthe.InterfaceduLabyrinthe;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -51,7 +53,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     public int getNumeropiece()throws RemoteException{
         return numeropiece;
     }
-
+  
     public void setNumeropiece(int numeropiece)throws RemoteException{
         this.numeropiece = numeropiece;
     }
@@ -154,6 +156,97 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
         this.etat = etat;
     }
   
-    
+    public void combattre(InterfaceCombat serverCombat,InterfaceduLabyrinthe stub) throws RemoteException
+    {
+        String choixfuirM=new String();
+        String choixfuir=new String();
+        String pseudo=new String();
+        /*
+                serverCombat.combattreLemonstre(this);
+                do
+               {
+                   
+                   
+                    choixfuir=this.choixclient();
+                      serverCombat.fuirlecombat(choixfuir, this);
+                       
+                 
+               }while(!choixfuir.equals("q") && serverCombat.etatCombat(this));
+               if(choixfuir.equals("q"))
+                 serverCombat.reinitialiserVieDuMonstre(this);
+       */
+                  if(stub.personnageViVant(this)>0 && stub.VerificationEtat(this)!=0)
+                 {
+                  afficher("Personne dans la pièce ");
+                  afficherPersonneDansLapiece(stub.afficherPersonnedanspiece(this));
+                  
+                  if(serverCombat.verifierEtatJoueur(this)>0)
+                  {
+                      
+                   do
+                  {
+                       this.afficher("Vous êtes attaqué appuyer q pour fuir");
+                      choixfuirM=choixclient();
+                      serverCombat.fuirCombatJoueurAttaquer(choixfuirM, this);
+                      
+                  }while(!choixfuirM.equals("q") && serverCombat.etatcombatDuJoueur(this));
+              
+                  }
+                 
+                   if(!choixfuirM.equals("q"))
+                   {
+                   afficher("Tapez le nom de celui que vous voulez attaquez");
+                   afficher("Appuyer Entrer pour passer");
+                   afficher("appuyer d pour pouvoir fuir si vous êtes attaqué");
+                    pseudo=choixclient();
+                  if(stub.afficherPersonnedanspiece(this).contains(pseudo) && pseudo.length()>3)
+                  {
+                      if(serverCombat.verifierEtatJoueur(this)>0)
+                      {
+                       do
+                         {
+                         afficher("Vous êtes attaqué appuyer q pour fuir");
+                         choixfuirM=choixclient();
+                         serverCombat.fuirCombatJoueurAttaquer(choixfuirM, this);
+                      
+                         }while(!choixfuirM.equals("q") && serverCombat.etatcombatDuJoueur(this));
+                  
+                      }
+                      else
+                      {
+                        serverCombat.combattreJoueur(this,pseudo);
+                  
+                        do
+                       {
+                  
+                        choixfuirM=this.choixclient();
+                        serverCombat.fuirCombatEntreJoueur(choixfuirM, this, pseudo);
+                
+                    
+                              
+                        }while(!choixfuirM.equals("q") && serverCombat.etatcombatDuJoueur(this));
+                 
+                      }
+                             
+                  }
+                  else if(pseudo.equals("d"))
+                  {
+                     if(serverCombat.verifierEtatJoueur(this)>0)
+                      {
+                       do
+                         {
+                         this.afficher("Vous êtes attaqué appuyer q pour fuir");
+                         choixfuirM=this.choixclient();
+                         serverCombat.fuirCombatJoueurAttaquer(choixfuirM, this);
+                      
+                         }while(!choixfuirM.equals("q") && serverCombat.etatcombatDuJoueur(this));
+                  
+                      }
+                      
+                  }
+                    
+                 }
+               }
+    }
     
 }

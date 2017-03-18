@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import persistance.ImplementPersistance;
@@ -26,6 +27,8 @@ public class DemarrerServeur {
         /**
          * on lance le serveur sur le port 99
          */
+        ArrayList<ImplInterfaceCombattre>server=new ArrayList<>();
+        
         LocateRegistry.createRegistry(1099);
         ImplementationDuLabyrinthe lab=new ImplementationDuLabyrinthe("bourourhe");
         lab.CreationDuLabyrinthe();
@@ -42,16 +45,23 @@ public class DemarrerServeur {
       Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
       }
                     
-                      
-		  
-     LocateRegistry.createRegistry(1097);
+      LocateRegistry.createRegistry(1097);
      ImplInterfaceCombattre comb=new ImplInterfaceCombattre(lab.getRegistre());
       Naming.rebind("rmi://localhost:1097/combat", comb);
        comb.initMonstreSalle();
       System.out.println(comb.toString());
-      
-         
-                    
+      for(int i=0;i<2;i++)
+        {
+         server.add(new ImplInterfaceCombattre(lab.getRegistre()));
+        }
+        
+          Naming.rebind("rmi://localhost:1099/combatserverone",server.get(0) );
+          server.get(0).initMonstreSalle();
+          
+          System.out.println("creation "+server.get(0).toString());  
+           Naming.rebind("rmi://localhost:1099/combatservertwo", server.get(1));
+           server.get(1).initMonstreSalle();
+          System.out.println("creation2 "+server.get(1).toString());  
     }
     
 }
