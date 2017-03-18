@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import persistance.ImplementPersistance;
 
 /**
  *
@@ -33,7 +34,7 @@ public class DemarrerServeur {
          * on créé un objet vers lequel on va lier le client,on lance parallèlement le serveur de chat sur le port 1098
          */
       Naming.rebind("rmi://localhost:1099/by", lab);
-      ServerChatImpl s=new ServerChatImpl();
+      ServerChatImpl s=new ServerChatImpl(lab.getRegistre());
       System.out.println(""+s.toString());
        try {
              Naming.rebind("rmi://localhost:1099/RMIT",s);
@@ -41,14 +42,13 @@ public class DemarrerServeur {
       Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
       }
                     
-                      LocateRegistry.createRegistry(1097);
-                      ImplInterfaceCombattre comb=new ImplInterfaceCombattre();
-                      Naming.rebind("rmi://localhost:1097/combat", comb);
                       
-		     
-                       comb.initMonstreSalle();
-		        System.out.println(comb.toString());
-                     
+		  
+     LocateRegistry.createRegistry(1097);
+     ImplInterfaceCombattre comb=new ImplInterfaceCombattre(lab.getRegistre());
+      Naming.rebind("rmi://localhost:1097/combat", comb);
+       comb.initMonstreSalle();
+      System.out.println(comb.toString());
       
          
                     

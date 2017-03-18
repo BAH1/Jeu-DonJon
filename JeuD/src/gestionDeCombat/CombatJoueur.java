@@ -6,6 +6,7 @@
 package gestionDeCombat;
 
 import gestionPersonnage.Personnage;
+import gestiondelabaseDeDonnee.Registre;
 import gestionduclient.InterfaceClient;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -23,12 +24,13 @@ public class CombatJoueur implements Runnable{
     private String pseudo;
     private InterfaceClient client;
      private ArrayList<Personnage> liste;
-   
+     private Registre base;
 
-    public CombatJoueur(String pseudo, InterfaceClient client, ArrayList<Personnage> liste) {
+    public CombatJoueur(String pseudo, InterfaceClient client, ArrayList<Personnage> liste,Registre base) throws RemoteException {
         this.pseudo = pseudo;
         this.client = client;
         this.liste = liste;
+        this.base=base;
     }
     public Personnage chercherPersonnage(String pseudo)
     {
@@ -51,19 +53,23 @@ public class CombatJoueur implements Runnable{
         p1=chercherPersonnage(client.getNom());
         Personnage p2 = new Personnage();
         p2=chercherPersonnage(pseudo);
-        
-        
+         
         if(p1.getNumeropiece()==p2.getNumeropiece())
         {
-            p1.getClient().afficher("Debut contre "+p2.getNom());
+            p1.setVie(base.recupererViePersonnage(p1.getNom()));
+            p2.setVie(base.recupererViePersonnage(p2.getNom())); 
+         
+            if(p1.getVieJoueur()!=0 && p2.getVieJoueur()!=0)
+            {
+               p1.getClient().afficher("Debut contre "+p2.getNom());
             p2.getClient().afficher("Debut contre "+p1.getNom());
             p1.setNbreCombat(p1.getNbreCombat()+1);
             p2.setNbreCombat(p2.getNbreCombat()+1);
-            do
+               do
             {
-                int d = r.nextInt(4);
+                int d = r.nextInt(3);
                 
-                if(d>2)
+                if(d>1)
                 {
                     TimeUnit.SECONDS.sleep(2);
                     String am = p2.getNom()+" attaque "+p1.getNom();
@@ -87,8 +93,8 @@ public class CombatJoueur implements Runnable{
                 }
                 
             }while(p1.getVieJoueur()!=0 && p2.getVieJoueur()!=0);
-            p1.setNbreCombat(p1.getNbreCombat()+1);
-            p2.setNbreCombat(p2.getNbreCombat()+1);
+            p1.setNbreCombat(p1.getNbreCombat()-1);
+            p2.setNbreCombat(p2.getNbreCombat()-1);
           
              
             if(p1.getVieJoueur()==0)
@@ -101,17 +107,33 @@ public class CombatJoueur implements Runnable{
                 p2.getClient().afficher("Votre nombre de vie apres "+p2.getVieJoueur());
                 p1.getClient().afficher("Tapez entrer pour continuer");
                 
+                base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
+                base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
             }
-            else if(p2.getVieJoueur()==0)
+            else 
             {
                 
                 p2.getClient().afficher("Vous etes mort "+p2.getNom());
-                p1.getClient().afficher("Votre nombre de vie avant "+p1.getNom());
+                p1.getClient().afficher("Votre nombre de vie avant "+p1.getVieJoueur());
                 p1.ajouterVieJoueur(1);
-                p1.getClient().afficher("votre vie apres "+p1.getVieJoueur());
+                p1.getClient().afficher("votre nombre de vie après  "+p1.getVieJoueur());
                 p1.getClient().afficher("Tapez entrer pour continuer");
+                base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
+                base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
             }
-            
+    
+        }
+         else if(p1.getVieJoueur()==0)
+         {
+                p1.getClient().afficher("Deplacer vous dans une autre pièce ");
+               
+         }
+         else 
+         {
+             p2.getClient().afficher("Deplacer vous dans une autre pièce ");
+             p1.getClient().afficher("Son personnage est déjà mort");
+         }
+                        
         }
       
             

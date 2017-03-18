@@ -27,6 +27,7 @@ public class Registre {
     {
         
     }
+    
     public void connexionBD() throws RemoteException {
 		// TODO Auto-generated method stub
 		try
@@ -54,7 +55,19 @@ public class Registre {
 	     	     
 		
 	}
-     
+    public int recupererViePersonnage(String pseudo)
+    {
+        String requeteVerif;
+          requeteVerif="select viejoueur from \"JOUEUR\" where pseudo='"+pseudo+"'";
+            return   Integer.parseInt(executerRequete(requeteVerif));
+    }
+    public void mettreAjourvieJoueur(String pseudo,int viejoueur)
+    {
+     String requete;
+     requete="UPDATE \"JOUEUR\" SET viejoueur='"+viejoueur+"' where pseudo='"+pseudo+"'";
+     insertion(requete);
+    }
+  
     public String executerRequete(String requete)
 	{
 		String res=new String();

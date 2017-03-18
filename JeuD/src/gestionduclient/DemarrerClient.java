@@ -47,8 +47,8 @@ public class DemarrerClient {
                client.afficher(stub.InformationSurlaDestination(client));
                choixrester=client.choixclient();
                if(!choixrester.equals("r"))
-               stub.deplacerJoueur(choixrester,client); 
-             serverCombat.recupererListeClient(stub.recupererListe());
+               stub.deplacerJoueur(choixrester,client);
+               serverCombat.recupererListeClient(stub.recupererListe());
               /*  serverCombat.combattreLemonstre(client);
              
                do
@@ -62,41 +62,74 @@ public class DemarrerClient {
               
                  serverCombat.reinitialiserVieDuMonstre(client);
              */
-                  if(stub.recupererListeParNumero(client).size()>1)
+                  if(stub.personnageViVant(client)>0 && stub.VerificationEtat(client)!=0)
                  {
                   client.afficher("Personne dans la pièce ");
-                  client.afficher(stub.afficherPersonnedanspiece(client));
-                  if(serverCombat.verifierEtatJoueur(client)>1)
+                  client.afficherPersonneDansLapiece(stub.afficherPersonnedanspiece(client));
+                  if(serverCombat.verifierEtatJoueur(client)>0)
                   {
                       
                    do
                   {
                        client.afficher("Vous êtes attaqué appuyer q pour fuir");
                       choixfuir=client.choixclient();
-                      serverCombat.fuirCombatEntreJoueur(choixfuir, client, pseudo);
+                      serverCombat.fuirCombatJoueurAttaquer(choixfuir, client);
                       
                   }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
               
                   }
                  
-                      
-                  client.afficher("Tapez le nom de celui que vous voulez attaquez ou q pour passer ");
-                  pseudo=client.choixclient();
-                  if(stub.afficherPersonnedanspiece(client).contains(pseudo))
+                   if(!choixfuir.equals("q"))
+                   {
+                   client.afficher("Tapez le nom de celui que vous voulez attaquez");
+                   client.afficher("Appuyer Entrer pour passer");
+                   client.afficher("appuyer d pour pouvoir fuir si vous êtes attaqué");
+                    pseudo=client.choixclient();
+                  if(stub.afficherPersonnedanspiece(client).contains(pseudo) && pseudo.length()>3)
                   {
-                      if(serverCombat.verifierEtatJoueur(client)>1)
+                      if(serverCombat.verifierEtatJoueur(client)>0)
                       {
-                          
-                      }
-                     serverCombat.combattreJoueur(client,pseudo);
-                  
-                  do
-                  {
-                    
-                      choixfuir=client.choixclient();
-                      serverCombat.fuirCombatEntreJoueur(choixfuir, client, pseudo);
+                       do
+                         {
+                         client.afficher("Vous êtes attaqué appuyer q pour fuir");
+                         choixfuir=client.choixclient();
+                         serverCombat.fuirCombatJoueurAttaquer(choixfuir, client);
                       
-                  }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
+                         }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
+                  
+                      }
+                      else
+                      {
+                        serverCombat.combattreJoueur(client,pseudo);
+                  
+                        do
+                       {
+                   
+                        choixfuir=client.choixclient();
+                        serverCombat.fuirCombatEntreJoueur(choixfuir, client, pseudo);
+                
+                    
+                              
+                        }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
+                 
+                      }
+                             
+                  }
+                  else if(pseudo.equals("d"))
+                  {
+                     if(serverCombat.verifierEtatJoueur(client)>0)
+                      {
+                       do
+                         {
+                         client.afficher("Vous êtes attaqué appuyer q pour fuir");
+                         choixfuir=client.choixclient();
+                         serverCombat.fuirCombatJoueurAttaquer(choixfuir, client);
+                      
+                         }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
+                  
+                      }
+                      
+                  }
                     
                  }
                }

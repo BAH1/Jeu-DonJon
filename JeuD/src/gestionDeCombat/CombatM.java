@@ -6,6 +6,7 @@
 package gestionDeCombat;
 
 import gestionPersonnage.Personnage;
+import gestiondelabaseDeDonnee.Registre;
 import gestionduclient.InterfaceClient;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -27,11 +28,13 @@ public class CombatM implements Runnable{
     private boolean etatcombat;
    private   Personnage p;
     private String choixclient; 
-   public CombatM(ArrayList<Personnage>liste,ArrayList<Monstre>lesMonstres,InterfaceClient client)
+    private Registre base;
+   public CombatM(ArrayList<Personnage>liste,ArrayList<Monstre>lesMonstres,InterfaceClient client,Registre base) throws RemoteException
    {
        this.liste=liste;
        this.lesMonstre=lesMonstres;
        this.client=client;
+       this.base=base;
       
    }
    
@@ -126,16 +129,18 @@ public class CombatM implements Runnable{
          p=new Personnage();
         p=chercherPersonnage(client.getNom());
          m = lesMonstre.get(p.getNumeropiece());
-         
+         p.setVie(base.recupererViePersonnage(p.getNom()));
        
             
+              if(p.getVieJoueur()!=0)
+              {
+                 p.getClient().afficher("Debut contre "+afficherString(p.getNumeropiece()));
               
-              p.getClient().afficher("Debut contre "+afficherString(p.getNumeropiece()));
               m.setNbreAdversaire(m.getNbreAdversaire()+1);
                 do
             {
                 
-                int d = r.nextInt(4);
+                int d = r.nextInt(3);
              
                
                 if(d>2)
@@ -173,7 +178,7 @@ public class CombatM implements Runnable{
                
                 p.getClient().afficher("Votre nombre de vie apres "+p.getVieJoueur());
                 p.getClient().afficher("Tapez entrer pour continuer");
-                
+                base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
             }
             else 
             {
@@ -184,65 +189,13 @@ public class CombatM implements Runnable{
                 m.setVieMonstre(m.getVieMonstre()+1);
                 p.getClient().afficher("La vie du monstre apres "+m.getVieMonstre());
                 p.getClient().afficher("Tapez entrer pour continuer");
-                
-            }
-          /*  do
-            {
-                
-                int d = r.nextInt(4);
-                if(Thread.currentThread().isInterrupted())
-                {
-                    System.err.println("je suis interrompu");
-                }
-               
-                if(d>2)
-                {
-                    TimeUnit.SECONDS.sleep(2);
-                    String am =""+afficherString(p.getNumeropiece())+" attaque "+p.getNom();
-                    p.getClient().afficher(am);
-                    //m.attaquerPersonnage(p);
-                    retirerviePersonnage(p.getNom());
-                    p.getClient().afficher("Votre nombre de vie est "+chercherPersonnage(client.getNom()).getVieJoueur());
-                    p.getClient().afficher("Tapez q pour fuir");
-                   
-                }
-                else 
-                {
-                    TimeUnit.SECONDS.sleep(2);
-                    String aj =p.getNom()+" attaque "+afficherString(p.getNumeropiece());
-                    p.getClient().afficher(aj);
-                   // m.retirerVieMonstre(1);
-                    retirerVieMonstre(p.getNumeropiece());
-                    String vm = "Nombre de vie du monstre  "+lesMonstre.get(p.getNumeropiece()).getVieMonstre();
-                    p.getClient().afficher(vm);
-                    p.getClient().afficher("Tapez q pour fuir");
-                    
-                }
-                  
-            }while(chercherPersonnage(client.getNom()).getVieJoueur()!=0 && lesMonstre.get(p.getNumeropiece()).getVieMonstre()!=0);
-           
-            if(lesMonstre.get(p.getNumeropiece()).getVieMonstre()==0)
-            {
-             
-                p.getClient().afficher("Monstre is dead: "+afficherString(p.getNumeropiece()));
-                p.getClient().afficher("Votre nombre de vie avant "+chercherPersonnage(client.getNom()).getVieJoueur());
-              //  p.ajouterVieJoueur(1);
-               ajouterViePersonnage(p.getNom());
-                p.getClient().afficher("Votre nombre de vie apres "+chercherPersonnage(client.getNom()).getVieJoueur());
-                p.getClient().afficher("Tapez entrer pour continuer");
-                
-            }
-            else 
-            {
-                
-                p.getClient().afficher("Vous avez perdu"+p.getNom());
-                p.getClient().afficher("Nombre de vie du monstre "+lesMonstre.get(p.getNumeropiece()).getVieMonstre());
-                ajouterVieMonstre(p.getNumeropiece());
-               // m.setVieMonstre(m.getVieMonstre()+1);
-                p.getClient().afficher("La vie du monstre apres "+lesMonstre.get(p.getNumeropiece()).getVieMonstre());
-                p.getClient().afficher("Tapez entrer pour continuer");
-                
-            }*/
+                base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
+            }    
+          }
+          else 
+          {
+                  p.getClient().afficher("Votre personnage est Mort deplacer vous dans une autre pièce");
+          }
         
           }
 

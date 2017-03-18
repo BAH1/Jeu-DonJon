@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import persistance.ImplementPersistance;
 
 /**
  *
@@ -28,6 +29,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
     private Registre registre;
     private Personnage perso; 
     private ListeClientParPiece listeclient;
+    private ImplementPersistance serverP;
     /**
      * 
      * @param nom
@@ -71,6 +73,8 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
                 perso.setClient(client);
                  requeteVerif="select numeropi from \"SETROUVER\" WHERE pseudopi='"+perso.getNom()+"'";
                 perso.setNumeropiece(Integer.parseInt(registre.executerRequete(requeteVerif)));
+                 requeteVerif="select viejoueur from \"JOUEUR\" where pseudo='"+perso.getNom()+"'";
+                perso.setVie(Integer.parseInt(registre.executerRequete(requeteVerif)));
                 // on l'ajoute dans la pièce où il se trouvait à sa deconnexion
                 listeclient.ajouterClientdansPiece(perso.getNumeropiece(), perso);
                 client.afficherEtatConnexion(perso.getNumeropiece());
@@ -97,6 +101,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
                    perso.setNumeropiece(1);
                     perso.setClient(client);
                     client.setNumeropiece(1);
+                    registre.mettreAjourvieJoueur(client.getNom(), 10);
                    listeclient.ajouterClientdansPiece(1, perso);
                     client.afficherEtatConnexion(perso.getNumeropiece());
                        notification(perso.getNumeropiece());
@@ -185,7 +190,10 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
             registre.insertion(requete);
             
             perso=listeclient.getPseudoPersonnage(client.getNom());
-           
+            if(perso.getVieJoueur()==0)
+            {
+                registre.mettreAjourvieJoueur(perso.getNom(), 10);
+            }
             client.afficherEtatConnexion(perso.getNumeropiece());
            notification(perso.getNumeropiece());
     }
@@ -227,14 +235,37 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
         String res=new String();
         for(Personnage p:listeclient.recupererListe(listeclient.chercherPersonnage(client.getNom())))
         {
+            if(registre.recupererViePersonnage(p.getNom())!=0)  
             res+=" "+p.getNom();
         }
+      
             return res;
     }
-    
-  
+     public int VerificationEtat(InterfaceClient client) throws RemoteException
+     {
+         return registre.recupererViePersonnage(client.getNom());
+     }
+     public int personnageViVant(InterfaceClient client) throws RemoteException
+     {
+         int res=0;
+         for(Personnage p:listeclient.recupererListe(listeclient.chercherPersonnage(client.getNom())))
+        {
+            if(registre.recupererViePersonnage(p.getNom())!=0 && !client.getNom().equals(p.getNom()))  
+             res++;
+        }
+      
+          return res;
+     }
      public ArrayList<Personnage> recupererListeParNumero(InterfaceClient client) throws RemoteException {
     return   listeclient.recupererListe(listeclient.chercherPersonnage(client.getNom()));  
+    }
+
+    public Registre getRegistre() {
+        return registre;
+    }
+
+    public void setRegistre(Registre registre) {
+        this.registre = registre;
     }
 
    

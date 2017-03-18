@@ -55,7 +55,20 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     public void setNumeropiece(int numeropiece)throws RemoteException{
         this.numeropiece = numeropiece;
     }
-
+    public void afficherPersonneDansLapiece(String personne) throws RemoteException
+    {
+        String s=new String();
+        String t[];
+       
+         t=personne.split(" ");
+            for(int i=0;i<t.length;i++)
+            {
+                
+                if(!t[i].equals(getNom()))
+                    s+=" "+t[i];
+            }
+            System.out.println(s);
+    }
     @Override
     public void afficherEtatConnexion(int numeroPiece) throws RemoteException {
          //To change body of generated methods, choose Tools | Templates.

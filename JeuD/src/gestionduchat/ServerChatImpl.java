@@ -23,10 +23,9 @@ public class ServerChatImpl extends UnicastRemoteObject implements ServeurChat{
     private ArrayList<String>registre;
     private Registre base;
     private ArrayList<Personnage>  listeP;
-    public ServerChatImpl()throws RemoteException{
+    public ServerChatImpl(Registre base)throws RemoteException{
        registre=new ArrayList<>();
-       base=new Registre();
-       base.connexionBD();
+       this.base=base;
        listeP=new ArrayList<>();
     }
     

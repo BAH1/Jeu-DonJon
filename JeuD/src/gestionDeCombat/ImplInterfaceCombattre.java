@@ -8,6 +8,7 @@ package gestionDeCombat;
 import com.mysql.jdbc.TimeUtil;
 import gestionPersonnage.ListePersonnage;
 import gestionPersonnage.Personnage;
+import gestiondelabaseDeDonnee.Registre;
 import gestionduLabyrinthe.ImplementationDuLabyrinthe;
 import gestionduLabyrinthe.Piece;
 import gestionduclient.InterfaceClient;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import persistance.ImplementPersistance;
 
 /**
  *
@@ -39,7 +41,8 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
      private ArrayList<Thread>listeCP;
     private HashMap<Integer,ArrayList<Thread>> listeCombatPersonne;
     private HashMap<Integer,ArrayList<Thread>>listeCombat;
-      public ImplInterfaceCombattre() throws RemoteException {
+    private Registre base;
+      public ImplInterfaceCombattre(Registre base) throws RemoteException {
 		super();
                 lesMonstre=new ArrayList<>();
               
@@ -47,6 +50,8 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                 listeCombatPersonne=new HashMap<>();
                 listeC=new ArrayList<>();
                 initialisation();
+                this.base=base;
+               
                
 	}
       public void initialisation()
@@ -87,7 +92,44 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
      }
 
       
-      
+      public void fuirCombatJoueurAttaquer(String choix,InterfaceClient client) throws RemoteException
+      {
+          String t[];
+          if(choix.equals("q"))
+          {
+              Personnage p1=chercherPersonnage(client.getNom());
+              for(Thread thread:listeCombatPersonne.get(p1.getNumeropiece()))
+             {
+              if(thread.getName().contains(p1.getNom()))
+              {
+                  t=thread.getName().split(" ");
+                  for(int i=0;i<t.length;i++)
+                  {
+                      if(!client.getNom().equals(t[i]))
+                      {
+                          Personnage p2=chercherPersonnage(t[i]);
+                          p2.getClient().afficher("Votre nombre de vie est :"+p2.getVieJoueur());
+                          p2.setNbreCombat(p2.getNbreCombat()-1);
+                          if(p2.getNbreCombat()==0)
+                         {
+                   
+                          p2.setVie(p2.getVieJoueur()+1);
+                          p2.getClient().afficher("Votre Nombre de vie après   "+p2.getVieJoueur());
+                          base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
+                          }
+                      }
+                  }
+                  
+                  thread.interrupt();
+                  p1.setNbreCombat(p1.getNbreCombat()-1);
+                  
+                  
+              }
+             }
+              p1.getClient().afficher("Votre nombre de vie est :"+p1.getVieJoueur());
+              base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
+          }
+      }
       public void fuirCombatEntreJoueur(String choix,InterfaceClient client,String pseudo) throws RemoteException
       {
           if(choix.equals("q"))
@@ -106,18 +148,21 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
               if(p2.getNbreCombat()==0)
               {
                  p1.getClient().afficher("Fuite de "+p1.getNom());
-                 p1.getClient().afficher("Nombre de vie avant de "+p1.getNom()+""+p1.getVieJoueur());
-                 p1.getClient().afficher("Nombre de vie avant de "+p2.getNom()+""+p2.getVieJoueur());
+                 p1.getClient().afficher("Nombre de vie avant de "+p1.getNom()+" "+p1.getVieJoueur());
+                 p2.getClient().afficher("Nombre de vie avant de "+p2.getNom()+" "+p2.getVieJoueur());
                  p2.setVie(p2.getVieJoueur()+1);
-                  p1.getClient().afficher("Nombre de vie après de "+p1.getNom()+""+p1.getVieJoueur());
-                 p1.getClient().afficher("Nombre de vie après de "+p2.getNom()+""+p2.getVieJoueur());
+                 p1.getClient().afficher("Nombre de vie après de "+p1.getNom()+" "+p1.getVieJoueur());
+                 p2.getClient().afficher("Nombre de vie après de "+p2.getNom()+" "+p2.getVieJoueur());
+                 base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());  
+                 base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
               }
               else 
               {
                  p1.getClient().afficher("Fuite de "+p1.getNom());
-                 p1.getClient().afficher("Nombre de vie avant de "+p1.getNom()+""+p1.getVieJoueur());
-                 p1.getClient().afficher("Nombre de vie avant de "+p2.getNom()+""+p2.getVieJoueur());
+                 p1.getClient().afficher("Nombre de vie avant de "+p1.getNom()+" "+p1.getVieJoueur());
+                 p1.getClient().afficher("Nombre de vie avant de "+p2.getNom()+" "+p2.getVieJoueur());
                  p1.getClient().afficher("Malheureusement pour toi vous etiez plusieurs sur lui ");
+                 base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
               }
               
                   
@@ -152,6 +197,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
               p.getClient().afficher("Nombre de vie du monstre avant "+m.getVieMonstre());
               m.setVieMonstre(m.getVieMonstre()+1);
               p.getClient().afficher("Nombre de vie du monstre Après "+m.getVieMonstre());
+              base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
        
              }
              else 
@@ -159,6 +205,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                   p.getClient().afficher("Fuite de "+p.getNom());
                   p.getClient().afficher("Nombre de vie du monstre avant "+m.getVieMonstre());
                   p.getClient().afficher("Malheureusement pour toi et dire que vous étiez 2 contre lui ");
+                  base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
              }
                
           }
@@ -193,11 +240,11 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
           String nomThread=new String();
            Personnage p=chercherPersonnage(client.getNom());
            
-          CombatJoueur co=new CombatJoueur(pseudo, client, liste);
+          CombatJoueur co=new CombatJoueur(pseudo, client, liste,this.base);
           Thread combJoueur=new Thread(co);
           combJoueur.start();
           
-          nomThread=client.getNom()+""+pseudo;
+          nomThread=client.getNom()+" "+pseudo;
           combJoueur.setName(nomThread);
            listeCombatPersonne.get(p.getNumeropiece()).add(combJoueur);
            
@@ -207,7 +254,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
           Personnage p=chercherPersonnage(client.getNom());
           Monstre m=lesMonstre.get(p.getNumeropiece());
          
-          combatMonstre=new CombatM(liste, lesMonstre,client);
+          combatMonstre=new CombatM(liste, lesMonstre,client,this.base);
              t=new Thread(combatMonstre);
              t.start();
              t.setName(p.getNom());
@@ -278,161 +325,6 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
       }
     }
      
-      
-    /*
-    @Override
-    
-    public void combattreMonstre(InterfaceClient client) throws RemoteException {
-        Random r=new Random();
-        String choix=new String();
-        Personnage p=new Personnage();
-        p=chercherPersonnage(client.getNom());
-        Monstre m = lesMonstre.get(p.getNumeropiece());
-        
-         
-        if(m.isEtatMonstre()==false)
-        {
-            p.getClient().afficher("Debut contre "+m.getNomMonstre());
-            m.setEtatMonstre(true);
-            mettreAjourEtatPersonnage(p.getNom(), true);
-            do
-            {
-                int d = r.nextInt(4);
-                
-                if(d>2)
-                {
-                    String am = m.getNomMonstre()+" attaque "+p.getNom();
-                    p.getClient().afficher(am);
-                    m.attaquerPersonnage(p);
-                    
-                    p.getClient().afficher("Votre nombre de vie est "+p.getVieJoueur());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ImplInterfaceCombattre.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    p.getClient().afficher("Tapez q pour fuir ");
-                   choix=p.getClient().choixclient();
-                }
-                else 
-                {
-                    String aj =p.getNom()+" attaque "+m.getNomMonstre();
-                    p.getClient().afficher(aj);
-                    m.retirerVieMonstre(1);
-                    String vm = "Nombre de vie du monstre  "+m.getVieMonstre();
-                    p.getClient().afficher(vm);
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(ImplInterfaceCombattre.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                     p.getClient().afficher("Tapez q pour fuir ");
-                     choix=p.getClient().choixclient();
-                }
-                
-            }while(p.getVieJoueur()!=0 && m.getVieMonstre()!=0 && !choix.equals("q"));
-             m.setEtatMonstre(false);
-             mettreAjourEtatPersonnage(p.getNom(), false);
-            if(m.getVieMonstre()==0)
-            {
-             
-                p.getClient().afficher("Monstre is dead: "+m.getNomMonstre());
-                p.getClient().afficher("Votre nombre de vie avant "+p.getVieJoueur());
-                if(!choix.equals("q"))
-                {
-                p.ajouterVieJoueur(1);
-                p.getClient().afficher("Votre nombre de vie apres "+p.getVieJoueur());
-                    
-                }
-                else 
-                    p.getClient().afficher("Votre nombre de vie apres "+p.getVieJoueur());
-                
-                
-            }
-            else if(p.getVieJoueur()==0)
-            {
-                
-                p.getClient().afficher("Clien is dead "+p.getNom());
-                p.getClient().afficher("Votre nombre de vie avant "+m.getVieMonstre());
-                m.setVieMonstre(1);
-                p.getClient().afficher("La vie du monstre apres "+m.getVieMonstre());
-                
-            }
-            
-        }
-      
-    }
-      
-    public void combattreJoueur(String pseudo,InterfaceClient client) throws RemoteException {
-        Random r=new Random();
-        String choix=new String();
-          Personnage p1=new Personnage();
-        p1=chercherPersonnage(client.getNom());
-        Personnage p2 = new Personnage();
-        p2=chercherPersonnage(pseudo);
-      
-        
-        
-        if(p2.getTest()!=1)
-        {
-            p1.getClient().afficher("Debut contre "+p2.getNom());
-            p2.getClient().afficher("Debut contre "+p1.getNom());
-             mettreAjourEtatPersonnage(p1.getNom(),true);
-             mettreAjourEtatPersonnage(p2.getNom(),true);
-            do
-            {
-                int d = r.nextInt(4);
-                
-                if(d>2)
-                {
-                    String am = p2.getNom()+" attaque "+p1.getNom();
-                    p1.getClient().afficher(am);
-                    p2.attaquerpersonnage(p1);
-                    p1.getClient().afficher("Votre nombre de vie est "+p1.getVieJoueur());
-                    p1.getClient().afficher("Tapez q pour fuir");
-                   // choix=p.choixJoueur();
-                }
-                else 
-                {
-                    String aj =p1.getNom()+" attaque "+p2.getNom();
-                    p2.getClient().afficher(aj); 
-                    p1.getClient().afficher(aj);
-                  
-                    p2.retirerVieJoueur(1);
-                    String vm = "Nombre de vie du Joueur  "+p2.getNom();
-                    p2.getClient().afficher(vm);
-                    p1.getClient().afficher(vm);
-                }
-                
-            }while(p1.getVieJoueur()!=0 && p2.getVieJoueur()!=0 && !choix.equals("q"));
-             mettreAjourEtatPersonnage(p1.getNom(),true);
-             mettreAjourEtatPersonnage(p2.getNom(),true);
-             
-            if(p1.getVieJoueur()==0)
-            {
-             
-                p1.getClient().afficher("vous etes mort: "+p1.getNom());
-                p2.getClient().afficher("Votre nombre de vie avant "+p2.getVieJoueur());
-              
-                p2.ajouterVieJoueur(1);
-                p2.getClient().afficher("Votre nombre de vie apres "+p2.getVieJoueur());
-                
-                
-            }
-            else if(p2.getVieJoueur()==0)
-            {
-                
-                p2.getClient().afficher("Vous etes mort "+p2.getNom());
-                p1.getClient().afficher("Votre nombre de vie avant "+p1.getNom());
-                p1.setVie(1);
-                p1.getClient().afficher("votre vie apres "+p1.getVieJoueur());
-                
-            }
-            
-        }
-      
-    }*/
-    
     
     
   

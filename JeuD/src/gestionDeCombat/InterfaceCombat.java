@@ -32,4 +32,5 @@ public interface InterfaceCombat extends Remote {
       public boolean etatcombatDuJoueur(InterfaceClient client) throws RemoteException;
       public void fuirCombatEntreJoueur(String choix,InterfaceClient client,String pseudo) throws RemoteException;
       public int verifierEtatJoueur(InterfaceClient client) throws RemoteException;
+      public void fuirCombatJoueurAttaquer(String choix,InterfaceClient client) throws RemoteException;
 }
