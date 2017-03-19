@@ -58,6 +58,7 @@ public class DemarrerClient {
               // serverCombat.recupererListeClient(stub.recupererListe());
                serverCombatone.recupererListeClient(stub.recupererListe());
                serverCombatTwo.recupererListeClient(stub.recupererListe());
+                System.err.println("diallo");
               /*  serverCombat.combattreLemonstre(client);
              
                do
