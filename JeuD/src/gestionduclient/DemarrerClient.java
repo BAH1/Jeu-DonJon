@@ -28,6 +28,7 @@ public class DemarrerClient {
            String msg = new String();
            String choixfuir=new String();
            String pseudo=new String();
+           int res=0;
          
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
          InterfaceCombat serverCombat = (InterfaceCombat)Naming.lookup("rmi://localhost:1097/combat");
@@ -46,7 +47,9 @@ public class DemarrerClient {
             
             if(choix.equals("1"))
             {
-               do
+                do
+                {
+                 do
                {
                client.afficher(stub.InformationSurlaDestination(client));
                choixrester=client.choixclient();
@@ -54,105 +57,28 @@ public class DemarrerClient {
                }while(!choixrester.equals("R") && !choixrester.equals("N")&& !choixrester.equals("S") && !choixrester.equals("O")&& 
                        !choixrester.equals("E"));
                   if(!choixrester.equals("R"))
-               stub.deplacerJoueur(choixrester,client);
-              // serverCombat.recupererListeClient(stub.recupererListe());
+                   res=stub.deplacerJoueur(choixrester,client);
+                     else
+                      res=1;
+                 
+                }while(res!=1);
+             
                serverCombatone.recupererListeClient(stub.recupererListe());
                serverCombatTwo.recupererListeClient(stub.recupererListe());
-                System.err.println("diallo");
-              /*  serverCombat.combattreLemonstre(client);
-             
-               do
-               {
-                   
-                    choixfuir=client.choixclient();
-                      serverCombat.fuirlecombat(choixfuir, client);
-                       
-                 
-               }while(!choixfuir.equals("q") && serverCombat.etatCombat(client));
               
-                 serverCombat.reinitialiserVieDuMonstre(client);
+              
+             
+             
                
-             */
+             
               if(stub.recupererNumeroPiece(client)>4)
               {
               client.combattre(serverCombatone, stub);    
               }
               else
               client.combattre(serverCombatTwo, stub);      
-              
-                 /* if(stub.personnageViVant(client)>0 && stub.VerificationEtat(client)!=0)
-                 {
-                  client.afficher("Personne dans la pièce ");
-                  client.afficherPersonneDansLapiece(stub.afficherPersonnedanspiece(client));
-                  if(serverCombat.verifierEtatJoueur(client)>0)
-                  {
                       
-                   do
-                  {
-                       client.afficher("Vous êtes attaqué appuyer q pour fuir");
-                      choixfuir=client.choixclient();
-                      serverCombat.fuirCombatJoueurAttaquer(choixfuir, client);
-                      
-                  }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
-              
-                  }
-                 
-                   if(!choixfuir.equals("q"))
-                   {
-                   client.afficher("Tapez le nom de celui que vous voulez attaquez");
-                   client.afficher("Appuyer Entrer pour passer");
-                   client.afficher("appuyer d pour pouvoir fuir si vous êtes attaqué");
-                    pseudo=client.choixclient();
-                  if(stub.afficherPersonnedanspiece(client).contains(pseudo) && pseudo.length()>3)
-                  {
-                      if(serverCombat.verifierEtatJoueur(client)>0)
-                      {
-                       do
-                         {
-                         client.afficher("Vous êtes attaqué appuyer q pour fuir");
-                         choixfuir=client.choixclient();
-                         serverCombat.fuirCombatJoueurAttaquer(choixfuir, client);
-                      
-                         }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
-                  
-                      }
-                      else
-                      {
-                        serverCombat.combattreJoueur(client,pseudo);
-                  
-                        do
-                       {
-                   
-                        choixfuir=client.choixclient();
-                        serverCombat.fuirCombatEntreJoueur(choixfuir, client, pseudo);
-                
-                    
-                              
-                        }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
-                 
-                      }
-                             
-                  }
-                  else if(pseudo.equals("d"))
-                  {
-                     if(serverCombat.verifierEtatJoueur(client)>0)
-                      {
-                       do
-                         {
-                         client.afficher("Vous êtes attaqué appuyer q pour fuir");
-                         choixfuir=client.choixclient();
-                         serverCombat.fuirCombatJoueurAttaquer(choixfuir, client);
-                      
-                         }while(!choixfuir.equals("q") && serverCombat.etatcombatDuJoueur(client));
-                  
-                      }
-                      
-                  }
-                    
-                 }
-               }*/
-             
-                
+            
            }
             else  if(choix.equals("2"))
             {

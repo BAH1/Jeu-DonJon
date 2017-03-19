@@ -53,7 +53,7 @@ public class DemarrerServeur {
         {
          server.add(new ImplInterfaceCombattre(lab.getRegistre()));
         }
-        
+        try {
           Naming.rebind("rmi://localhost:1099/combatserverone",server.get(0) );
           server.get(0).initMonstreSalle();
           
@@ -61,6 +61,9 @@ public class DemarrerServeur {
            Naming.rebind("rmi://localhost:1099/combatservertwo", server.get(1));
            server.get(1).initMonstreSalle();
           System.out.println("creation2 "+server.get(1).toString());  
+        }catch (MalformedURLException ex) {
+      Logger.getLogger(ImplementationDuLabyrinthe.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }
     
 }

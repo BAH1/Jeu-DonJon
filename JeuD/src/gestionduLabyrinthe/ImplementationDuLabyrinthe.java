@@ -28,6 +28,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
     private Registre registre;
     private Personnage perso; 
     private ListeClientParPiece listeclient;
+    private ArrayList<Piece>pieces;
   
     /**
      * 
@@ -45,6 +46,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
        listeclient=new ListeClientParPiece();
        // on initilialiste chaque pièce avec une liste
        listeclient.initialiser();
+       pieces=new ArrayList();
   }
 
     
@@ -168,7 +170,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
         return requete;
     }
     
-    public void deplacerJoueur(String choix,InterfaceClient client) throws RemoteException
+    public int deplacerJoueur(String choix,InterfaceClient client) throws RemoteException
     {
         String res;
         if(choix.equals("N"))
@@ -179,7 +181,10 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
             choix+="ST";
         else 
             choix+="UEST";
-        String requete;
+        String requete; 
+        
+        
+        
         /* on recupère numero de la pièce de destination en fonction du choix
         puis on met à jour la base de donnée vers cette pièce 
         on le deplace son personne dans cette pièce dans la liste de personnage
@@ -188,16 +193,29 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
         
         
         */ 
+        int j=0;
+        Piece p = pieces.get(recupererNumeroPiece(client)-1);
+             
+               for(String porte:p.getNomPorte())
+               {
+                   if(porte.equals(choix)){ 
+                       j=1;
+                   }
+                           
+               }
         
+    if (j==1)
+    {
         perso=listeclient.getPseudoPersonnage(client.getNom());
            requete="select numpidest from \"TRAVERSER\" where portepi='"+choix+"' and numerop='"
                           +perso.getNumeropiece()+"'";
+           
           
            res=registre.executerRequete(requete);
            requete="UPDATE \"SETROUVER\" SET numeropi='"+res+"' where pseudopi='"
                    +perso.getNom()+"'";
                        
-              listeclient.deplacerClient(perso.getNumeropiece(), client, Integer.parseInt(res));
+            listeclient.deplacerClient(perso.getNumeropiece(), client, Integer.parseInt(res));
               
         
             registre.insertion(requete);
@@ -211,14 +229,23 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
             client.afficherEtatConnexion(perso.getNumeropiece());
            notification(perso.getNumeropiece());
     }
+        
+        return j;
+    }
     
    
     
    public void CreationDuLabyrinthe() throws RemoteException
    {
     
-       
       registre.connexionBD();
+      
+       for (int i = 1; i < 10; i++) {
+           
+           pieces.add(new Piece(i));
+
+           
+       }
    }
     // recupère le numero de la pièce pour pouvoir l'envoyer au serveur de chat 
     @Override

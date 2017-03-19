@@ -24,7 +24,7 @@ public interface InterfaceduLabyrinthe extends Remote{
     public void connexion(InterfaceClient client) throws RemoteException;
      //public void ajouterClient(InterfaceClient client)throws RemoteException;
     public String InformationSurlaDestination(InterfaceClient client) throws RemoteException;
-       public void deplacerJoueur(String choix,InterfaceClient client) throws RemoteException;
+       public int deplacerJoueur(String choix,InterfaceClient client) throws RemoteException;
        public int  recupererNumeroPiece(InterfaceClient client)throws RemoteException;
        public ArrayList<Personnage> recupererListe()throws RemoteException;
       public ArrayList<Personnage> recupererListeParNumero(InterfaceClient client) throws RemoteException;

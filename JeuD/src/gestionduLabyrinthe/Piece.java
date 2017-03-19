@@ -40,6 +40,7 @@ public class Piece {
         this.numeroPiece = numeroPiece;
         this.nomPorte=new ArrayList<>();
         personneDansLapiece=new ArrayList<>();
+        creerUnePiece(numeroPiece);
                
     }
     public int trouverUnPersonne(String nom)
@@ -142,11 +143,16 @@ public class Piece {
     public int getNumeroPiece() {
         return numeroPiece;
     }
+    
 
     public ArrayList<String> getNomPorte() {
         return nomPorte;
     }
-        
+    
+
+    public String[] getPorte() {
+        return porte;
+    }
  
  
 }
