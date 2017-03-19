@@ -60,6 +60,7 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
 		// TODO Auto-generated method stub
 		String sortie=new String();
 		 String requeteVerif;
+                 int vie;
                  
           requeteVerif="SELECT pseudo FROM \"JOUEUR\" WHERE pseudo='"+client.getNom()+"'";
           sortie=registre.executerRequete(requeteVerif);
@@ -73,7 +74,20 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
                  requeteVerif="select numeropi from \"SETROUVER\" WHERE pseudopi='"+perso.getNom()+"'";
                 perso.setNumeropiece(Integer.parseInt(registre.executerRequete(requeteVerif)));
                  requeteVerif="select viejoueur from \"JOUEUR\" where pseudo='"+perso.getNom()+"'";
-                perso.setVie(Integer.parseInt(registre.executerRequete(requeteVerif)));
+                 vie=Integer.parseInt(registre.executerRequete(requeteVerif));
+                System.err.println("la vie du joueur"+vie);
+                if(vie==0)
+                {
+                    perso.setVie(10);
+                    registre.mettreAjourvieJoueur(perso.getNom(), 10);
+                }
+                    
+                else
+                {
+                    perso.setVie(vie);
+                    registre.mettreAjourvieJoueur(perso.getNom(), vie);
+                }
+                    
                 // on l'ajoute dans la pièce où il se trouvait à sa deconnexion
                 listeclient.ajouterClientdansPiece(perso.getNumeropiece(), perso);
                 client.afficherEtatConnexion(perso.getNumeropiece());
@@ -189,7 +203,8 @@ public class ImplementationDuLabyrinthe extends UnicastRemoteObject implements I
             registre.insertion(requete);
             
             perso=listeclient.getPseudoPersonnage(client.getNom());
-            if(perso.getVieJoueur()==0)
+           
+            if(registre.recupererViePersonnage(perso.getNom())==0)
             {
                 registre.mettreAjourvieJoueur(perso.getNom(), 10);
             }

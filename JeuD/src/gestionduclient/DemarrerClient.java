@@ -32,7 +32,7 @@ public class DemarrerClient {
          InterfaceduLabyrinthe  stub  =(InterfaceduLabyrinthe) Naming.lookup("rmi://localhost:1099/by");
          InterfaceCombat serverCombat = (InterfaceCombat)Naming.lookup("rmi://localhost:1097/combat");
          ServeurChat   serveur=(ServeurChat)Naming.lookup("rmi://localhost:1099/RMIT");
-         InterfaceCombat serverCombatone=(InterfaceCombat)Naming.lookup("rmi://localhost:1099/combatservertwo");
+         InterfaceCombat serverCombatone=(InterfaceCombat)Naming.lookup("rmi://localhost:1099/combatserverone");
          InterfaceCombat serverCombatTwo=(InterfaceCombat)Naming.lookup("rmi://localhost:1099/combatservertwo");
           ImplementationClient client=new ImplementationClient();
           

@@ -115,13 +115,12 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                           Personnage p2=chercherPersonnage(t[i]);
                           p2.getClient().afficher("Votre nombre de vie est :"+p2.getVieJoueur());
                           p2.setNbreCombat(p2.getNbreCombat()-1);
-                          if(p2.getNbreCombat()==0)
-                         {
+                         
                    
                           p2.setVie(p2.getVieJoueur()+1);
                           p2.getClient().afficher("Votre Nombre de vie après   "+p2.getVieJoueur());
                           base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
-                          }
+                          
                       }
                   }
                   
@@ -218,6 +217,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                  p1.getClient().afficher("Nombre de vie avant de "+p1.getNom()+" "+p1.getVieJoueur());
                  p1.getClient().afficher("Nombre de vie avant de "+p2.getNom()+" "+p2.getVieJoueur());
                  p1.getClient().afficher("Malheureusement pour toi vous etiez plusieurs sur lui ");
+                 p2.setVie(p2.getVieJoueur()+1);
                  base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
               }
               
@@ -250,7 +250,7 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
                    
           }
       
-                   System.err.println("M"+m.getNomMonstre()+" "+m.getNbreAdversaire());
+                 
          
              if(m.getNbreAdversaire()==0)
              {
@@ -261,11 +261,13 @@ public class ImplInterfaceCombattre extends UnicastRemoteObject implements Inter
               base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
        
              }
-             else 
+             else  
              {
                   p.getClient().afficher("Fuite de "+p.getNom());
                   p.getClient().afficher("Nombre de vie du monstre avant "+m.getVieMonstre());
-                  p.getClient().afficher("Malheureusement pour toi et dire que vous étiez 2 contre lui ");
+                  m.setVieMonstre(m.getVieMonstre()+1);
+                  p.getClient().afficher("Nombre de vie du monstre Après "+m.getVieMonstre());
+                  p.getClient().afficher("Malheureusement pour toi et dire que vous étiez plusieurs contre lui ");
                   base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
              }
                

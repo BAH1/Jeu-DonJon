@@ -148,6 +148,7 @@ public class CombatM implements Runnable{
                 {
                     TimeUnit.SECONDS.sleep(8);
                     String am =""+m.getNomMonstre()+" attaque "+p.getNom();
+              
                     p.getClient().afficher(am);
                     m.attaquerPersonnage(p);
                   
