@@ -62,7 +62,9 @@ public class Monstre  implements Serializable{
     }
 
     public void setVieMonstre(Integer vieMonstre) {
+        if(vieMonstre<6){
         this.vieMonstre = vieMonstre;
+        }
     }
     
      public void attaquerPersonnage(Personnage p) throws RemoteException{

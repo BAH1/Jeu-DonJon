@@ -108,7 +108,14 @@ public class CombatJoueur implements Runnable{
                 p1.getClient().afficher("Tapez entrer pour continuer");
                 
                 base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
-                base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
+                base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur()); 
+                base.mettreAjourPieceJoueur(p1.getNom(), 1);
+                try {
+                    p1.getClient().deconnect();
+                } catch (Exception e) {
+                    System.err.println("deconneecte "+p1.getNom());
+                }
+                
             }
             else 
             {
@@ -119,11 +126,20 @@ public class CombatJoueur implements Runnable{
                 p1.getClient().afficher("votre nombre de vie après  "+p1.getVieJoueur());
                 p1.getClient().afficher("Tapez entrer pour continuer");
                 base.mettreAjourvieJoueur(p1.getNom(), p1.getVieJoueur());
-                base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur());
+                base.mettreAjourvieJoueur(p2.getNom(), p2.getVieJoueur()); 
+                base.mettreAjourPieceJoueur(p2.getNom(), 1);
+                
+                try {
+                    p2.getClient().deconnect();
+                } catch (Exception e) { 
+                    System.err.println("deconnecte"+p2.getNom());
+                }
+                
+                
             }
     
         }
-         else if(p1.getVieJoueur()==0)
+    /*     else if(p1.getVieJoueur()==0)
          {
                 p1.getClient().afficher("Deplacer vous dans une autre pièce ");
                
@@ -132,7 +148,7 @@ public class CombatJoueur implements Runnable{
          {
              p2.getClient().afficher("Deplacer vous dans une autre pièce ");
              p1.getClient().afficher("Son personnage est déjà mort");
-         }
+         }*/
                         
         }
       

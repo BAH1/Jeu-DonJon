@@ -28,5 +28,6 @@ public interface InterfaceClient extends Remote{
      public int getVie() throws RemoteException;
       public int getEtat() throws RemoteException;
        public void setEtat(int etat) throws RemoteException;
+       public void deconnect() throws RemoteException;
     
 }

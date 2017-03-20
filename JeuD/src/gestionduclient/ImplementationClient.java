@@ -90,7 +90,7 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
     }
     public void Menu() 
     {
-        System.out.println("1.pour se deplacer ");
+        System.out.println("1.pour se deplacer ou Rester dans la meme piece");
          System.out.println("2.pour chatter ");
          System.out.println("3.pour quitter ");
         
@@ -113,7 +113,9 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
         Scanner sc=new Scanner(System.in);
         String monMessage=new String();
         String test=new String();
-        System.out.println("Entrer votre message");
+        System.out.println("1: Entrer votre message");
+        System.out.println("2:Entrer q pour quittez");
+        
         
          monMessage+="["+nom+"] ";
            test=sc.nextLine();
@@ -248,5 +250,9 @@ public class ImplementationClient extends UnicastRemoteObject implements Interfa
                  }
                }
     }
+    public void deconnect() throws RemoteException{
+        
+        System.exit(0);
     
+    }
 }

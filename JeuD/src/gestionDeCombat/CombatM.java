@@ -146,7 +146,7 @@ public class CombatM implements Runnable{
                
                 if(d>2)
                 {
-                    TimeUnit.SECONDS.sleep(8);
+                    TimeUnit.SECONDS.sleep(4);
                     String am =""+m.getNomMonstre()+" attaque "+p.getNom();
               
                     p.getClient().afficher(am);
@@ -158,7 +158,7 @@ public class CombatM implements Runnable{
                 }
                 else 
                 {
-                    TimeUnit.SECONDS.sleep(8);
+                    TimeUnit.SECONDS.sleep(4);
                     String aj =p.getNom()+" attaque "+m.getNomMonstre();
                     p.getClient().afficher(aj);
                     m.retirerVieMonstre(1);
@@ -191,6 +191,13 @@ public class CombatM implements Runnable{
                 p.getClient().afficher("La vie du monstre apres "+m.getVieMonstre());
                 p.getClient().afficher("Tapez entrer pour continuer");
                 base.mettreAjourvieJoueur(p.getNom(), p.getVieJoueur());
+                base.mettreAjourPieceJoueur(p.getNom(), 1);
+                try {
+                     p.getClient().deconnect();
+                } catch (Exception e) {
+                    System.err.println("deconnecte "+p.getNom());
+                }
+               
             }    
           }
           else 
@@ -237,7 +244,13 @@ public class CombatM implements Runnable{
         this.p = p;
     }
          
-          
+          public static String getRouge() {
+    return "\033[31m";
+}
+ 
+public static String getVert() {
+    return "\033[32m";
+}
         }
      
     
